@@ -1,7 +1,7 @@
 import React from 'react';
 
 const UserBubble = (props) => {
-
+    
     return (
         <div className="ui message">
         <div className="header">
