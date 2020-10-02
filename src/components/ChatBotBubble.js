@@ -15,6 +15,7 @@ const getConversation = (configConvo) => {
 
 const ChatBotBubble = props => {
     console.log(props, 'what is in props here?');
+    
     return (
         <div>
         <div className="ui message">
