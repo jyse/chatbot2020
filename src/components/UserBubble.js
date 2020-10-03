@@ -1,18 +1,6 @@
 import React from 'react';
 import { Form } from 'reactstrap';
 
-// const UserBubble = (props) => {
-//     console.log(props, 'is user getting any props here?');
-//     return (
-//         <div className="ui message">
-//         <div className="header">
-//             Corgi2083
-//         </div>
-//         <p> {props.message} </p>
-//         </div>
-//     );
-// };
-
 const UserBubble = ({
     finished,
     finishedAnswer,
