@@ -12,16 +12,16 @@ const UserBubble = ({
     return (
         <div>
         { finished &&
-            <div className="ui message">
+            <div className="ui message" style={{ marginTop: '10px', textAlign: 'right' }}>
                 <div className="header">
-                    Chatbot2020
+                    JustJessy888s
                 </div>
                 <p> Answer: {finishedAnswer}</p>
             </div>
         }
         { !finished && 
-            <Form className="card p-2" onSubmit={onAnswer}>
-                <div className="input-group">
+            <Form className="card p-2" onSubmit={onAnswer} style={{ marginTop: '10px' }}>
+                <div className="input-group" style={{ marginTop: '10px' }}>
                     <input
                         value={liveAnswer}
                         onChange={onCurrentAnswerChange}
@@ -29,8 +29,8 @@ const UserBubble = ({
                         className="form-control"
                         placeholder="Your Answer"
                     />
-                    <div className="input-group-append">
-                        <button type="submit" className="btn btn-secondary">Redeem</button>
+                    <div className="input-group-append" style={{ marginTop: '10px' }}>
+                        <button type="submit" className="btn btn-secondary">Submit</button>
                     </div>
                     { hasButton && 
                         <p>I have a button</p>

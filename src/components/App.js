@@ -2,8 +2,6 @@ import React from 'react';
 import ChatBotBubble from './ChatBotBubble';
 import UserBubble from './UserBubble';
 
-
-
 const QUESTIONS = {
   0: {
     question: 'How many potential new clients did you add to your list today? Use numbers',
@@ -47,6 +45,7 @@ const INITIAL_STATE = {
   thirdQuestionAsked: false,
   fourthQuestionAsked: false,
   fifthQuestionAsked: false,
+  sixtQuestionAsked: false,
 };
 
 class App extends React.Component {
@@ -54,13 +53,9 @@ class App extends React.Component {
     super(props);
     this.state = INITIAL_STATE;
 
-    this.handleAnswer = this.handleAnswer.bind(this);
-    this.nextStep = this.nextStep.bind(this);
-    this.currentAnswerChange = this.currentAnswerChange.bind(this);
-    this.onAnswer = this.onAnswer.bind(this);
   }
 
-  handleAnswer() {
+  handleAnswer = () => {
     // input
     let {   
       currentStep,
@@ -77,6 +72,7 @@ class App extends React.Component {
       thirdQuestionAsked,
       fourthQuestionAsked,
       fifthQuestionAsked,
+      sixthQuestionAsked,
     } = this.state;
 
     // processing
@@ -99,7 +95,7 @@ class App extends React.Component {
         break;
       case 4:
         fifthAnswer = liveAnswer;
-        // sixthQuestionAsked = true;
+        sixthQuestionAsked = true;
         break;
       default:
         console.log("this must not happen HERE");
@@ -123,7 +119,7 @@ class App extends React.Component {
      });
   }
 
-  nextStep() {
+  nextStep = () => {
     // input
     let { currentStep } = this.state;
 
@@ -134,12 +130,12 @@ class App extends React.Component {
     this.setState({currentStep});
   }
 
-  currentAnswerChange(e) {
+  currentAnswerChange = (e) => {
     var liveAnswer = e.target.value;
     this.setState({liveAnswer});
   }
 
-  onAnswer(e) {
+  onAnswer = (e) => {
     e.preventDefault();
     this.handleAnswer();
     this.nextStep();
@@ -153,9 +149,13 @@ class App extends React.Component {
       secondQuestionAsked,
       thirdQuestionAsked,
       fourthQuestionAsked,   
+      fifthQuestionAsked,
+      sixthQuestionAsked,
       firstAnswer, 
       secondAnswer,
       thirdAnswer,
+      fourthAnswer,
+      fifthAnswer
     } = this.state;
 
     return (
@@ -164,10 +164,11 @@ class App extends React.Component {
         <p>currentStep: {currentStep} </p>
         { firstQuestionAsked &&
           <div>
-            <div>
+            <div class="ui container" style={{ marginTop: '10px' }}>
               <ChatBotBubble question={QUESTIONS[0].question} />
             </div>
             <div>
+            <div class="ui container" style={{ marginTop: '10px' }}>
               <UserBubble 
                 finished={secondQuestionAsked}
                 finishedAnswer={firstAnswer}
@@ -176,6 +177,7 @@ class App extends React.Component {
                 onCurrentAnswerChange={this.currentAnswerChange}
                 onAnswer={this.onAnswer}
               />
+            </div>
             </div>
          </div>
         }
@@ -213,6 +215,40 @@ class App extends React.Component {
             </div>
          </div>
         }
+        { fourthQuestionAsked &&
+          <div>
+            <div class="ui container" style={{ marginTop: '10px' }}>
+              <ChatBotBubble question={QUESTIONS[3].question} />
+            </div>
+            <div class="ui container" style={{ marginTop: '10px' }}>
+              <UserBubble 
+                finished={fifthQuestionAsked}
+                finishedAnswer={fourthAnswer}
+                hasButton={QUESTIONS[3].button}
+                liveAnswer={liveAnswer}
+                onCurrentAnswerChange={this.currentAnswerChange}
+                onAnswer={this.onAnswer}
+              />
+            </div>
+         </div>
+        } 
+         { fifthQuestionAsked &&
+          <div>
+            <div class="ui container" style={{ marginTop: '10px' }}>
+              <ChatBotBubble question={QUESTIONS[4].question} />
+            </div>
+            <div class="ui container" style={{ marginTop: '10px' }}>
+              <UserBubble 
+                finished={sixthQuestionAsked}
+                finishedAnswer={fourthAnswer}
+                hasButton={QUESTIONS[4].button}
+                liveAnswer={liveAnswer}
+                onCurrentAnswerChange={this.currentAnswerChange}
+                onAnswer={this.onAnswer}
+              />
+            </div>
+         </div>
+        }        
       </div>
         );
     }
