@@ -1,6 +1,18 @@
 import React from 'react';
 import { Form } from 'reactstrap';
 
+// const UserBubble = (props) => {
+//     console.log(props, 'is user getting any props here?');
+//     return (
+//         <div className="ui message">
+//         <div className="header">
+//             Corgi2083
+//         </div>
+//         <p> {props.message} </p>
+//         </div>
+//     );
+// };
+
 const UserBubble = ({
     finished,
     finishedAnswer,
@@ -12,16 +24,16 @@ const UserBubble = ({
     return (
         <div>
         { finished &&
-            <div className="ui message" style={{ marginTop: '10px', textAlign: 'right' }}>
+            <div className="ui message">
                 <div className="header">
-                    JustJessy888s
+                    Chatbot2020
                 </div>
                 <p> Answer: {finishedAnswer}</p>
             </div>
         }
         { !finished && 
-            <Form className="card p-2" onSubmit={onAnswer} style={{ marginTop: '10px' }}>
-                <div className="input-group" style={{ marginTop: '10px' }}>
+            <Form className="card p-2" onSubmit={onAnswer}>
+                <div className="input-group">
                     <input
                         value={liveAnswer}
                         onChange={onCurrentAnswerChange}
@@ -29,8 +41,8 @@ const UserBubble = ({
                         className="form-control"
                         placeholder="Your Answer"
                     />
-                    <div className="input-group-append" style={{ marginTop: '10px' }}>
-                        <button type="submit" className="btn btn-secondary">Submit</button>
+                    <div className="input-group-append">
+                        <button type="submit" className="btn btn-secondary">Redeem</button>
                     </div>
                     { hasButton && 
                         <p>I have a button</p>
