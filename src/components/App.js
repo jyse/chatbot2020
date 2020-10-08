@@ -6,7 +6,7 @@ import UserBubbleFinished from './UserBubbleFinished';
 
 const QUESTIONS = {
   0: {
-    question: 'How many potential new clients did you add to your list today? Use numbers',
+    question: 'How many potential clients did you contact today? Use numbers',
     buttonOn: true,
    },
   1: {
