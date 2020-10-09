@@ -1,8 +1,10 @@
 import React from 'react';
+import "./App.css";
 import ChatBotBubble from './ChatBotBubble';
-import UserBubble from './UserBubble';
 import UserBubbleActive from './UserBubbleActive';
 import UserBubbleFinished from './UserBubbleFinished';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Login from './Login';
 
 const QUESTIONS = {
   0: {
@@ -94,6 +96,24 @@ class App extends React.Component {
     this.nextStep();
   }
 
+  useEffect(() => {
+    auth.onAuthStateChanged((authUser) => {
+      console.log("THE USER IS >>> ", authUser);
+      if (authUser) {
+        dispatch({
+          type: "SET_USER",
+          user: authUser,
+        });
+      } else {
+        // the user is logged out
+        dispatch({
+          type: "SET_USER",
+          user: null,
+        });
+      }
+    });
+  }, []);
+
   render() {
     const {
       liveAnswer,
@@ -102,20 +122,30 @@ class App extends React.Component {
     } = this.state;
 
     return (
-      <div>
-        <p>currentStep: {currentStep} </p>
-          { qas && qas.map((qa) => (
-            <div> 
-              <ChatBotBubble question={qa.question}/>
-              <UserBubbleFinished finishedAnswer={qa.answer}/>
-            </div>
-          ))}
-          <ChatBotBubble question={QUESTIONS[currentStep].question}/>
-          <UserBubbleActive 
-            liveAnswer={liveAnswer}
-            onCurrentAnswerChange={this.currentAnswerChange}
-            onAnswer={this.onAnswer}   
-          />
+      
+      <div className="app">
+        <Router>
+          <Route path="/login">
+            <Login />
+          </Route>
+          <Switch> 
+            <Route path="/">
+              <p>currentStep: {currentStep} </p>
+                { qas && qas.map((qa) => (
+                  <div> 
+                    <ChatBotBubble question={qa.question}/>
+                    <UserBubbleFinished finishedAnswer={qa.answer}/>
+                  </div>
+                ))}
+                <ChatBotBubble question={QUESTIONS[currentStep].question}/>
+                <UserBubbleActive 
+                  liveAnswer={liveAnswer}
+                  onCurrentAnswerChange={this.currentAnswerChange}
+                  onAnswer={this.onAnswer}   
+                />
+              </Route>
+            </Switch>
+          </Router>
       </div>
       );
     }
