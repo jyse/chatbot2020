@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
-import '../App.css';
-import ChatBotBubble from './ChatBotBubble';
-import UserBubbleActive from './UserBubbleActive';
-import UserBubbleFinished from './UserBubbleFinished';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Login from './Login';
+import './styles.css';
+import ChatBotBubble from '../../components/ChatBotBubble';
+import UserBubbleActive from '../../components/UserBubbleActive';
+import UserBubbleFinished from '../../components/UserBubbleFinished';
+import { Redirect } from 'react-router-dom';
 
 const QUESTIONS = {
   0: {
@@ -44,6 +43,7 @@ const INITIAL_STATE = {
   qas: [
     // contain data of last month
   ],
+  currentUser: null,
 
   // during process data gets added to qas
   // qas needs to be stored back into the database
@@ -115,31 +115,29 @@ class App extends React.Component {
   render() {
     const { liveAnswer, currentStep, qas } = this.state;
 
+    console.log('IS main rendered?? YEs!');
+
+    // if (!this.state.currentUser) {
+    //   // check if current user, also possible to use history.push('/login')
+    //   return <Redirect to="/login" />;
+    // }
+
     return (
       <div className="app">
-        <Router>
-          {/* <Route path="/login">
-            <Login />
-          </Route> */}
-          <Switch>
-            <Route path="/">
-              <p>currentStep: {currentStep} </p>
-              {qas &&
-                qas.map((qa) => (
-                  <div>
-                    <ChatBotBubble question={qa.question} />
-                    <UserBubbleFinished finishedAnswer={qa.answer} />
-                  </div>
-                ))}
-              <ChatBotBubble question={QUESTIONS[currentStep].question} />
-              <UserBubbleActive
-                liveAnswer={liveAnswer}
-                onCurrentAnswerChange={this.currentAnswerChange}
-                onAnswer={this.onAnswer}
-              />
-            </Route>
-          </Switch>
-        </Router>
+        <p>currentStep: {currentStep} </p>
+        {qas &&
+          qas.map((qa) => (
+            <div>
+              <ChatBotBubble question={qa.question} />
+              <UserBubbleFinished finishedAnswer={qa.answer} />
+            </div>
+          ))}
+        <ChatBotBubble question={QUESTIONS[currentStep].question} />
+        <UserBubbleActive
+          liveAnswer={liveAnswer}
+          onCurrentAnswerChange={this.currentAnswerChange}
+          onAnswer={this.onAnswer}
+        />
       </div>
     );
   }
