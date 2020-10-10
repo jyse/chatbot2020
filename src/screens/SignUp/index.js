@@ -1,24 +1,30 @@
 import React, { useState } from "react";
-import "./Login.css";
+import "./SignUp.css";
 import { Link, useHistory } from "react-router-dom";
 import { auth } from "../../firebase";
-import gurlogo from "./gurlogo.png";
+import gurlogo from "../../assets/images/gurlogo.png";
 
-function Login() {
+function SignUp() {
   const history = useHistory();
+  const [company, setCompany] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const signIn = (e) => {
+  const register = (e) => {
     e.preventDefault();
 
     auth
-      .signInWithEmailAndPassword(email, password)
+      .createUserWithEmailAndPassword(email, password)
       .then((auth) => {
-        history.push("/");
+        // it successfully created a new user with email and password
+        if (auth) {
+          history.push("/");
+        }
       })
       .catch((error) => alert(error.message));
   };
+
   return (
     <div className="login">
       <Link to="/">
@@ -26,9 +32,21 @@ function Login() {
       </Link>
 
       <div className="login__container">
-        <h1>Log in</h1>
-
+        <h1>Sign up</h1>
         <form>
+          <h5>Company</h5>
+          <input
+            type="text"
+            value={company}
+            onChange={(e) => setCompany(e.target.value)}
+          />
+          <h5>Name</h5>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+
           <h5>E-mail</h5>
           <input
             type="text"
@@ -45,26 +63,25 @@ function Login() {
 
           <button
             type="submit"
-            onClick={signIn}
+            onClick={register}
             className="login__signInButton"
           >
-            Login
+            Sign up
           </button>
         </form>
-
         <p>
-          By signing-in you agree to the Get Uncommon results Conditions of Use
+          By signing up you agree to the Get Uncommon Results Conditions of Use
           & Sale. Please see our Privacy Notice, our Cookies Notice and our
           Interest-Based Ads Notice.
         </p>
         <button
-          onClick={() => history.push("/signup")}
+          onClick={() => history.push("/login")}
           className="login__registerButton"
         >
-          Sign up
+          Login
         </button>
       </div>
     </div>
   );
 }
-export default Login;
+export default SignUp;
