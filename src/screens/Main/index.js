@@ -38,15 +38,7 @@ const INITIAL_STATE = {
   error: "",
   currentStep: 0,
   liveAnswer: "",
-  // once you identify user
-  // liveDataStore get stuff into
-  qas: [
-    // contain data of last month
-  ],
-
-  // during process data gets added to qas
-  // qas needs to be stored back into the database
-  // then show visual Data from qas
+  qas: [],
 };
 
 class Main extends React.Component {
@@ -99,7 +91,7 @@ class Main extends React.Component {
     return (
       <div className="app">
         <p>currentStep: Konnichiwa </p>
-        {/* {qas &&
+        {qas &&
           qas.map((qa) => (
             <div>
               <ChatBotBubble question={qa.question} />
@@ -111,7 +103,7 @@ class Main extends React.Component {
           liveAnswer={liveAnswer}
           onCurrentAnswerChange={this.currentAnswerChange}
           onAnswer={this.onAnswer}
-        /> */}
+        />
       </div>
     );
   }

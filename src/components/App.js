@@ -8,17 +8,15 @@ import { createBrowserHistory } from "history";
 
 const history = createBrowserHistory();
 
-class App extends React.Component {
-  render() {
-    console.log("hi wre are in app");
-    return (
-      <Router>
-        <div className="App">
-          {/* <Route path="/Login" component={Login} /> */}
-          {/* <Route path="/" component={Main} /> */}
-        </div>
-      </Router>
-    );
-  }
-}
+const App = () => {
+  console.log("hi wre are in app");
+  return (
+    <Router>
+      <div className="App">
+        <Route path="/Login" component={Login} />
+        <Route path="/" component={Main} />
+      </div>
+    </Router>
+  );
+};
 export default App;
