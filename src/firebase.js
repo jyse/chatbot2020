@@ -9,7 +9,7 @@ const firebaseConfig = {
   storageBucket: "chatbotgur.appspot.com",
   messagingSenderId: "747298048183",
   appId: "1:747298048183:web:bc605d5f7546cd94936532",
-  measurementId: "G-5EKWHMC95M"
+  measurementId: "G-5EKWHMC95M",
 };
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);

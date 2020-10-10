@@ -2,8 +2,7 @@ import React, { useEffect } from "react";
 import ChatBotBubble from "../../components/ChatBotBubble";
 import UserBubbleActive from "../../components/UserBubbleActive";
 import UserBubbleFinished from "../../components/UserBubbleFinished";
-import Login from "../Login";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { auth } from "../../firebase";
 
 const QUESTIONS = {
   0: {
@@ -47,6 +46,14 @@ class Main extends React.Component {
     this.state = INITIAL_STATE;
   }
 
+  componentDidMount() {
+    const getMyData = async () => {
+      let UID = firebase.auth().currentUser.uid;
+      let userData = await getUserDataByUID(UID);
+      console.log(userData);
+    };
+  }
+
   handleAnswer = () => {
     // input
     let { currentStep, liveAnswer, qas } = this.state;
@@ -87,7 +94,6 @@ class Main extends React.Component {
 
   render() {
     const { liveAnswer, currentStep, qas } = this.state;
-
     return (
       <div className="app">
         <p>currentStep: Konnichiwa </p>
