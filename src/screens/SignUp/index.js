@@ -3,11 +3,13 @@ import "./SignUp.css";
 import { Link, useHistory } from "react-router-dom";
 import { auth } from "../../firebase";
 import gurlogo from "../../assets/images/gurlogo.png";
+import { firestore } from "../../firebase";
 
 function SignUp() {
   const history = useHistory();
   const [company, setCompany] = useState("");
-  const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -19,6 +21,12 @@ function SignUp() {
       .then((auth) => {
         // it successfully created a new user with email and password
         if (auth) {
+          firestore.collection("users").add({
+            userId: auth.user.uid,
+            company: company,
+            firstName: firstName,
+            lastName: lastName,
+          });
           history.push("/");
         }
       })
@@ -40,13 +48,18 @@ function SignUp() {
             value={company}
             onChange={(e) => setCompany(e.target.value)}
           />
-          <h5>Name</h5>
+          <h5>first name</h5>
           <input
             type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
           />
-
+          <h5>last name</h5>
+          <input
+            type="text"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+          />
           <h5>E-mail</h5>
           <input
             type="text"

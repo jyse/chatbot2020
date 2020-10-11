@@ -12,7 +12,9 @@
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
-    "reactstrap": "^6.5.0"
+    "reactstrap": "^6.5.0",
+    "validator": "^13.1.17",
+    "victory": "^35.2.0"
   },
   "homepage": ".",
   "scripts": {
