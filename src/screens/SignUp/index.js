@@ -10,6 +10,7 @@ function SignUp() {
   const [company, setCompany] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -60,6 +61,13 @@ function SignUp() {
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
           />
+          <h5>Name</h5>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+
           <h5>E-mail</h5>
           <input
             type="text"
