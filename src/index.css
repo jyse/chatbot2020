@@ -40,3 +40,7 @@ code {
   display: flex;
   justify-content: flex-end;
 }
+
+chatbot-area {
+  background: black;
+}

@@ -222,8 +222,8 @@ class Main extends React.Component {
     const { liveAnswer, currentStep, qas, currentUser } = this.state;
     return (
       <div className="app container mx-auto flex justify-center">
+        {/* <p>Hello {currentUser?.firstName} </p> */}
         <div>
-          <p>Hello {currentUser?.firstName} </p>
           {qas &&
             qas.map((qa, index) => (
               <div>
