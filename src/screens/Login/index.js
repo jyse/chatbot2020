@@ -22,7 +22,7 @@ function Login() {
   return (
     <div className="login">
       <Link to="/">
-        <img className="login__logo" src={gurlogo} />
+        <img className="login__logo" alt="chatBotLogo" src={gurlogo} />
       </Link>
 
       <div className="login__container">

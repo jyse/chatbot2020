@@ -19,7 +19,7 @@ const UserBubbleActive = ({
             value={liveAnswer}
             onChange={onCurrentAnswerChange}
             className="form-control"
-            placeholder="Your Answer"
+            placeholder="Type number"
           />
           <div className="input-group-append" style={{ marginTop: "10px" }}>
             <button type="submit" className="btn btn-secondary">

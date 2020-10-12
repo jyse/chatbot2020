@@ -1,13 +1,9 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import "./App.css";
 import Main from "./screens/Main";
 import Login from "./screens/Login";
 import SignUp from "./screens/SignUp";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { createBrowserHistory } from "history";
-
-const history = createBrowserHistory();
 
 const App = () => {
   return (

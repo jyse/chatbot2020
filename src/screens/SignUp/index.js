@@ -37,7 +37,7 @@ function SignUp() {
   return (
     <div className="login">
       <Link to="/">
-        <img className="login__logo" src={gurlogo} />
+        <img className="login__logo" alt="loginLogo" src={gurlogo} />
       </Link>
 
       <div className="login__container">
