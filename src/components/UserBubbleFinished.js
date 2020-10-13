@@ -1,7 +1,8 @@
+import { removeUndefinedProps } from "@material-ui/data-grid";
 import React from "react";
 import userIcon from "./userIcon.png";
 
-const UserBubbleFinished = ({ finishedAnswer }) => {
+const UserBubbleFinished = (props) => {
   return (
     <div className="chat-message-answer">
       <div
@@ -14,11 +15,11 @@ const UserBubbleFinished = ({ finishedAnswer }) => {
               <img src={userIcon} alt="userIcon" />
             </a>
             <div className="content">
-              <a className="author">Jason</a>
+              <a className="author">{props.user.firstName}</a>
             </div>
           </div>
           <div className="text" style={{ fontSize: "10px" }}>
-            {finishedAnswer}
+            {props.finishedAnswer}
           </div>
         </div>
       </div>

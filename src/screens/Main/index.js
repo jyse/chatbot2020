@@ -5,6 +5,7 @@ import UserBubbleFinished from "../../components/UserBubbleFinished";
 import { auth, firestore } from "../../firebase";
 import { withRouter } from "react-router-dom";
 import ChatBotBubblePieChart from "../../components/ChatBotBubblePieChart";
+import ChatBotBubbleBarChart from "../../components/ChatBotBubbleBarChart";
 
 const QUESTIONS = {
   0: {
@@ -48,6 +49,7 @@ const INITIAL_STATE = {
   qas: [],
   currentUser: null,
   userData: [],
+  barChartData: [],
 };
 
 class Main extends React.Component {
@@ -80,11 +82,7 @@ class Main extends React.Component {
   handleAnswer = () => {
     // input
     let { currentStep, liveAnswer, qas } = this.state;
-
-    qas.push({
-      question: QUESTIONS[currentStep].question,
-      answer: liveAnswer,
-    });
+    let question_keys_answered_previously = {};
 
     firestore.collection("answers").add({
       userId: this.state.currentUser.userId,
@@ -92,8 +90,6 @@ class Main extends React.Component {
       question: QUESTIONS[currentStep].key,
       answer: liveAnswer,
     });
-
-    let question_keys_answered_previously = {};
 
     const updatedUserData = this.state.userData.map((item) => {
       const { x, y } = item;
@@ -111,6 +107,11 @@ class Main extends React.Component {
         }
       }
       return item;
+    });
+
+    qas.push({
+      question: QUESTIONS[currentStep].question,
+      answer: liveAnswer,
     });
 
     if (
@@ -135,13 +136,10 @@ class Main extends React.Component {
   };
 
   nextStep = () => {
-    // input
     let { currentStep } = this.state;
 
-    // process
     currentStep = currentStep + 1;
 
-    // output
     this.setState({ currentStep });
   };
 
@@ -160,6 +158,7 @@ class Main extends React.Component {
 
   getUserDataForVisual = async (user) => {
     const userData = [];
+    const barChartData = [];
     await firestore
       .collection("answers")
       .where("userId", "==", user.userId)
@@ -171,42 +170,27 @@ class Main extends React.Component {
             x: answerDoc.question,
             y: parseInt(answerDoc.answer),
           });
+          if (answerDoc.question == "revenue") {
+            barChartData.push({
+              x: answerDoc.date,
+              y: answerDoc.answer,
+            });
+          }
         });
       });
-    // console.log(userData, " what is in userData");
 
-    const totalQuestionsAnswered = userData.reduce((acc, { x, y }) => {
-      // If we don't have the question key in the accumulator, then add it and set it to zero by default
+    const totalPerQuestionsAnswered = userData.reduce((acc, { x, y }) => {
       if (!Reflect.has(acc, x)) acc[x] = 0;
-      // Cast the value to a number
+
       let count = parseInt(y);
-      // If we have a valid number then we sum the question key value with the new count
+
       if (Number.isInteger(count)) {
         acc[x] += y;
       }
-      // Return accumulator
       return acc;
     }, {});
 
-    /*
-      Convert an object like:
-
-      {
-        calls: 25,
-        pitches: 50
-      }
-
-      to
-
-      [
-        {x: 'calls', y: 25},
-        {x: 'pitches', y: 50}
-      ]
-
-      This is done for the victory pie chart
-
-    */
-    const visualUserData = Object.entries(totalQuestionsAnswered).map(
+    const visualUserData = Object.entries(totalPerQuestionsAnswered).map(
       ([key, count]) => ({
         x: key,
         y: count,
@@ -215,6 +199,7 @@ class Main extends React.Component {
 
     this.setState({
       userData: visualUserData,
+      barChartData: barChartData,
     });
   };
 
@@ -222,24 +207,34 @@ class Main extends React.Component {
     const { liveAnswer, currentStep, qas, currentUser } = this.state;
     return (
       <div className="app container mx-auto flex justify-center">
-        {/* <p>Hello {currentUser?.firstName} </p> */}
         <div>
+          <p>Hello {currentUser?.firstName} </p>
           {qas &&
             qas.map((qa, index) => (
               <div>
                 <ChatBotBubble question={qa.question} />
-                <UserBubbleFinished finishedAnswer={qa.answer} />
-                {this.state.currentStep > 2 && index > 2 && (
-                  <ChatBotBubblePieChart userData={this.state.userData} />
-                )}
+                <UserBubbleFinished
+                  finishedAnswer={qa.answer}
+                  user={currentUser}
+                />
               </div>
             ))}
-          <ChatBotBubble question={QUESTIONS[currentStep].question} />
-          <UserBubbleActive
-            liveAnswer={liveAnswer}
-            onCurrentAnswerChange={this.currentAnswerChange}
-            onAnswer={this.onAnswer}
-          />
+          {currentStep < 5 && (
+            <div>
+              <ChatBotBubble question={QUESTIONS[currentStep].question} />
+              <UserBubbleActive
+                liveAnswer={liveAnswer}
+                onCurrentAnswerChange={this.currentAnswerChange}
+                onAnswer={this.onAnswer}
+              />
+            </div>
+          )}
+          {this.state.currentStep > 4 && (
+            <ChatBotBubblePieChart userData={this.state.userData} />
+          )}
+          {this.state.currentStep > 4 && (
+            <ChatBotBubbleBarChart data={this.state.barChartData} />
+          )}
         </div>
       </div>
     );
@@ -247,3 +242,5 @@ class Main extends React.Component {
 }
 
 export default withRouter(Main);
+
+// to do tomorrow:
