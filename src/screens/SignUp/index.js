@@ -49,23 +49,17 @@ function SignUp() {
             value={company}
             onChange={(e) => setCompany(e.target.value)}
           />
-          <h5>first name</h5>
+          <h5>First name</h5>
           <input
             type="text"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
           />
-          <h5>last name</h5>
+          <h5>Last name</h5>
           <input
             type="text"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
-          />
-          <h5>Name</h5>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
           />
 
           <h5>E-mail</h5>

@@ -19,7 +19,7 @@ const ChatBotBubblePieChart = (props) => {
   });
 
   return (
-    <div className="piechart-area" style={{ width: 300, height: 300 }}>
+    <div className="piechart-area" style={{ width: 350, height: 350 }}>
       <VictoryPie
         data={props.userData}
         width={150}
