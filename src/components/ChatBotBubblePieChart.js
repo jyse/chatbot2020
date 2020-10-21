@@ -2,8 +2,6 @@ import React from "react";
 import { VictoryPie, VictoryLabel } from "victory";
 
 const ChatBotBubblePieChart = (props) => {
-  console.log(props.userData, "what is in props userData?");
-
   let total = 0;
   props.userData.map((objectAnswer) => {
     total += objectAnswer.y;

@@ -1,5 +1,6 @@
 import React from "react";
 import "./App.css";
+import ChatBot from "./screens/ChatBot";
 import Main from "./screens/Main";
 import Login from "./screens/Login";
 import SignUp from "./screens/SignUp";
@@ -16,6 +17,10 @@ const App = () => {
 
         <Route exact path="/">
           <Main />
+        </Route>
+
+        <Route exact path="/chatbot">
+          <ChatBot />
         </Route>
 
         <Route exact path="/signup">

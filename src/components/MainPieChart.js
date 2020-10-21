@@ -1,17 +1,13 @@
-import React, { Component } from "react";
+import React from "react";
+import ChatBotBubble from "../../components/ChatBotBubble";
+import UserBubbleActive from "../../components/UserBubbleActive";
+import UserBubbleFinished from "../../components/UserBubbleFinished";
 import { auth, firestore } from "../../firebase";
 import { withRouter } from "react-router-dom";
 import ChatBotBubblePieChart from "../../components/ChatBotBubblePieChart";
+import ChatBotBubbleBarChart from "../../components/ChatBotBubbleBarChart";
 
-// UserPage (Main because this is the first thing the user sees).
-// PieChart % of reaching your goal that month
-// Grid with numbers of the five categories
-
-const INITIAL_STATE = {
-  userData: [],
-};
-
-class Main extends React.Component {
+class MainPieChart extends React.Component {
   constructor(props) {
     super(props);
     this.state = INITIAL_STATE;
@@ -81,19 +77,17 @@ class Main extends React.Component {
 
     this.setState({
       userData: visualUserData,
+      barChartData: barChartData,
     });
   };
 
   render() {
-    const { currentUser } = this.state;
+    const { liveAnswer, currentStep, qas, currentUser } = this.state;
     return (
-      <div className="app container mx-auto flex justify-center">
-        <div>
-          <p>Hello {currentUser?.firstName} </p>
-          <ChatBotBubblePieChart userData={this.state.userData} />
-        </div>
-      </div>
-    );
-  }
-}
-export default withRouter(Main);
+
+
+    }
+
+export default withRouter(MainPieChart);
+
+
