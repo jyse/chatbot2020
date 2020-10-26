@@ -242,5 +242,3 @@ class ChatBot extends React.Component {
 }
 
 export default withRouter(ChatBot);
-
-// to do tomorrow:

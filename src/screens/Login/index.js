@@ -16,6 +16,8 @@ function Login() {
       .signInWithEmailAndPassword(email, password)
       .then((auth) => {
         history.push("/");
+        history.push("/chatbot");
+        history.push("/dashboard");
       })
       .catch((error) => alert(error.message));
   };
