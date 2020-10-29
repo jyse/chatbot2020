@@ -129,4 +129,31 @@ export default Login;
 // .sidenav__list-item:hover {
 //   background-color: rgba(255, 255, 255, 0.2);
 //   cursor: pointer;
-// }
+// }/* Non-mobile styles, 750px breakpoint */
+/* @media only screen and (min-width: 46.875em) {
+  /* Show the sidenav */
+  /* .grid-container {
+    grid-template-columns: 240px 1fr;
+    grid-template-areas:
+      " header"
+      " main"
+      "sidenav footer";
+  } */
+
+  /* .sidenav {
+    position: relative;
+    transform: translateX(0);
+  } */
+
+  /* .sidenav__close-icon {
+    visibility: hidden;
+  }
+} */ 
+
+/* Medium screens breakpoint (1050px) */
+/* @media only screen and (min-width: 65.625em) {
+  /* Break out main cards into two columns */
+  /* .main-cards {
+    column-count: 2;
+  }
+} */ 

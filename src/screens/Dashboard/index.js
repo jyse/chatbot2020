@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { auth, firestore } from "../../firebase";
 import { withRouter } from "react-router-dom";
-import { DataGrid } from "@material-ui/data-grid";
 import "./Dashboard.css";
-import ChatBotBubblePieChart from "../../components/ChatBotBubblePieChart";
+import SideBarToggleButton from "../../components/SideBarToggleButton";
+import SideNavigation from "../../components/SideNavigation";
 
 const INITIAL_STATE = {
   currentUser: null,
@@ -18,20 +18,74 @@ class Dashboard extends React.Component {
 
   render() {
     return (
-      <div class="grid-container">
-        <div class="menu-icon">
-          <i class="fas fa-bars header__menu"></i>
+      <div>
+        <div>
+          <SideNavigation />
         </div>
-
-        <div class="header">
-          <div className="header__search">Search...</div>
-          <div className="header__items">
-            <a href="/">Account</a>
-            <a href="/">Help</a>
+        <div class="grid-container">
+          <div class="header">
+            <div>
+              <SideBarToggleButton />
+            </div>
+            {/* //Hmm hier aparte component van maken? */}
+            <div className="header__search">Search...</div>
+            <div className="header__items">
+              <a href="/">Account</a>
+              <a href="/">Help</a>
+            </div>
           </div>
-        </div>
 
-        <aside class="sidenav">
+          <main class="main">
+            <div class="main-header">
+              <div class="main-header__heading">Hello User</div>
+              <div class="main-header__updates">
+                <p> Konnichiwa</p>
+              </div>
+            </div>
+
+            <div>
+              <SideNavigation />
+            </div>
+
+            <div class="main-overview">
+              <div class="overviewcard">
+                <div class="overviewcard__icon">Overview</div>
+                <div class="overviewcard__info">Card</div>
+              </div>
+              <div class="overviewcard">
+                <div class="overviewcard__icon">Overview</div>
+                <div class="overviewcard__info">Card</div>
+              </div>
+              <div class="overviewcard">
+                <div class="overviewcard__icon">Overview</div>
+                <div class="overviewcard__info">Card</div>
+              </div>
+              <div class="overviewcard">
+                <div class="overviewcard__icon">Overview</div>
+                <div class="overviewcard__info">Card</div>
+              </div>
+            </div>
+
+            <div class="main-cards">
+              <div class="card">Card</div>
+              <div class="card">Card</div>
+              <div class="card">Card</div>
+            </div>
+          </main>
+
+          <footer class="footer">
+            <div class="footer__copyright">&copy; 2018 MTH</div>
+            <div class="footer__signature">Made with love by pure genius</div>
+          </footer>
+        </div>
+      </div>
+    );
+  }
+}
+export default withRouter(Dashboard);
+
+{
+  /* <aside class="sidenav">
           <div class="sidenav__close-icon">
             <i class="fas fa-times sidenav__brand-close"></i>
           </div>
@@ -43,50 +97,8 @@ class Dashboard extends React.Component {
             <li class="sidenav__list-item">Item Five</li>
           </ul>
         </aside>
-
-        <main class="main">
-          <div class="main-header">
-            <div class="main-header__heading">Hello User</div>
-            <div class="main-header__updates">
-              <p> Konnichiwa</p>
-            </div>
-          </div>
-
-          <div class="main-overview">
-            <div class="overviewcard">
-              <div class="overviewcard__icon">Overview</div>
-              <div class="overviewcard__info">Card</div>
-            </div>
-            <div class="overviewcard">
-              <div class="overviewcard__icon">Overview</div>
-              <div class="overviewcard__info">Card</div>
-            </div>
-            <div class="overviewcard">
-              <div class="overviewcard__icon">Overview</div>
-              <div class="overviewcard__info">Card</div>
-            </div>
-            <div class="overviewcard">
-              <div class="overviewcard__icon">Overview</div>
-              <div class="overviewcard__info">Card</div>
-            </div>
-          </div>
-
-          <div class="main-cards">
-            <div class="card">Card</div>
-            <div class="card">Card</div>
-            <div class="card">Card</div>
-          </div>
-        </main>
-
-        <footer class="footer">
-          <div class="footer__copyright">&copy; 2018 MTH</div>
-          <div class="footer__signature">Made with love by pure genius</div>
-        </footer>
-      </div>
-    );
-  }
+ */
 }
-export default withRouter(Dashboard);
 
 // const INITIAL_STATE = {
 //   userData: [],
