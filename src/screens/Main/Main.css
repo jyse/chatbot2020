@@ -35,6 +35,7 @@ body {
 /* Give every child element its grid name */
 .header {
   grid-area: header;
+  height: 35px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -58,7 +59,13 @@ body {
   color: turquoise;
 }
 
-*/ .main {
+@media (max-width: 768px) {
+  .header__items {
+    display: none;
+  }
+}
+
+*/ .main-screen {
   grid-area: main;
   background-color: #8fd4d9;
 }
@@ -117,13 +124,4 @@ body {
 
 .card:nth-child(3) {
   height: 265px;
-}
-
-.footer {
-  grid-area: footer;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 16px;
-  background-color: #f5dbcb;
 }

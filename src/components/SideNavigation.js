@@ -3,8 +3,12 @@ import chatbotIcon from "./chatbotIcon.png";
 import "./SideNavigation.css";
 
 const SideNavigation = (props) => {
+  let sideNavClasses = "side-nav";
+  if (props.show) {
+    sideNavClasses = "side-nav open";
+  }
   return (
-    <nav className="side-drawer">
+    <nav className={sideNavClasses}>
       <ul>
         <li>
           <a href="/">Overview</a>
