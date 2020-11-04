@@ -4,7 +4,7 @@ import ChatBot from "./screens/ChatBot";
 import Main from "./screens/Main";
 import Login from "./screens/Login";
 import SignUp from "./screens/SignUp";
-import Dashboard from "./screens/Dashboard";
+import ForumPage from "./screens/ForumPage";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 const App = () => {
@@ -13,6 +13,9 @@ const App = () => {
       <Switch>
         <Route exact path="/login">
           <Login />
+        </Route>
+        <Route exact path="/forum">
+          <ForumPage />
         </Route>
 
         <Route exact path="/">
@@ -26,9 +29,6 @@ const App = () => {
         <Route exact path="/signup">
           <SignUp />
         </Route>
-        {/* <Route exact path="/dashboard">
-          <Dashboard />
-        </Route> */}
       </Switch>
     </Router>
   );
