@@ -15,13 +15,13 @@ function Login() {
     auth
       .signInWithEmailAndPassword(email, password)
       .then((auth) => {
-        history.push("/");
+        history.push("/chatbot");
       })
       .catch((error) => alert(error.message));
   };
   return (
     <div className="login">
-      <Link to="/">
+      <Link to="/chatbot">
         <img className="login__logo" alt="chatBotLogo" src={gurlogo} />
       </Link>
 

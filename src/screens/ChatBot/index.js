@@ -6,6 +6,8 @@ import { auth, firestore } from "../../firebase";
 import { withRouter } from "react-router-dom";
 import ChatBotBubblePieChart from "../../components/ChatBotBubblePieChart";
 import ChatBotBubbleBarChart from "../../components/ChatBotBubbleBarChart";
+import "./ChatBot.css";
+import chatbotIcon from "../../components/chatbotIcon.png";
 
 const QUESTIONS = {
   0: {
@@ -60,6 +62,7 @@ class ChatBot extends React.Component {
 
   componentDidMount = () => {
     auth.onAuthStateChanged((user) => {
+      console.log(user, "what is user here?");
       if (user) {
         const userDocument = firestore
           .collection("users")
@@ -203,38 +206,89 @@ class ChatBot extends React.Component {
     });
   };
 
+  // const UserBubbleActive = ({
+  //   hasButton,
+  //   liveAnswer,
+  //   onCurrentAnswerChange,
+  //   onAnswer,
+  // }) => {
+  //   return (
+  //     <div className="chat__footer">
+  //       <Form
+  //         className="card p-2"
+  //         onSubmit={onAnswer}
+  //         style={{ marginTop: "10px" }}
+  //       >
+  //         <div className="input-group" style={{ marginTop: "10px" }}>
+  //           <input
+  //             value={liveAnswer}
+  //             onChange={onCurrentAnswerChange}
+  //             className="form-control"
+  //             placeholder="Type number"
+  //           />
+  //           <div className="input-group-append" style={{ marginTop: "10px" }}>
+  //             <button type="submit" className="btn btn-secondary">
+  //               Submit
+  //             </button>
+  //           </div>
+  //           {hasButton && <p>I have a button</p>}
+  //         </div>
+  //       </Form>
+  //     </div>
+  //   );
+  // };
+
   render() {
     const { liveAnswer, currentStep, qas, currentUser } = this.state;
+    console.log(currentUser, "what is current user here?");
     return (
-      <div className="app container mx-auto flex justify-center">
-        <div>
-          <p>Hello {currentUser?.firstName} </p>
-          {qas &&
-            qas.map((qa, index) => (
-              <div>
-                <ChatBotBubble question={qa.question} />
-                <UserBubbleFinished
-                  finishedAnswer={qa.answer}
-                  user={currentUser}
-                />
-              </div>
-            ))}
-          {currentStep < 5 && (
-            <div>
-              <ChatBotBubble question={QUESTIONS[currentStep].question} />
-              <UserBubbleActive
-                liveAnswer={liveAnswer}
-                onCurrentAnswerChange={this.currentAnswerChange}
-                onAnswer={this.onAnswer}
-              />
+      <div className="chat">
+        <div className="chat__mainblock">
+          <div className="chat__header">
+            <img src={chatbotIcon} alt="Chatbot" />
+            <div className="chat__headerInfo">
+              <p>Hello {currentUser?.firstName}! </p>
             </div>
-          )}
-          {this.state.currentStep > 4 && (
-            <ChatBotBubblePieChart userData={this.state.userData} />
-          )}
-          {this.state.currentStep > 4 && (
-            <ChatBotBubbleBarChart data={this.state.barChartData} />
-          )}
+            <div className="chat__headerRight">
+              <p>{new Date().toLocaleDateString()}</p>
+            </div>
+          </div>
+          <div>
+            <div className="chat__body">
+              {qas &&
+                qas.map((qa, index) => (
+                  <div>
+                    <ChatBotBubble question={qa.question} />
+                    <UserBubbleFinished
+                      finishedAnswer={qa.answer}
+                      user={currentUser}
+                    />
+                  </div>
+                ))}
+              {currentStep < 5 && (
+                <div>
+                  <ChatBotBubble question={QUESTIONS[currentStep].question} />
+                  <UserBubbleActive
+                    liveAnswer={liveAnswer}
+                    onCurrentAnswerChange={this.currentAnswerChange}
+                    onAnswer={this.onAnswer}
+                  />
+                </div>
+              )}
+              {this.state.currentStep > 4 && (
+                <ChatBotBubblePieChart userData={this.state.userData} />
+              )}
+              {this.state.currentStep > 4 && (
+                <ChatBotBubbleBarChart data={this.state.barChartData} />
+              )}
+            </div>
+          </div>
+          <div className="chat__footer">
+            <form>
+              <input placeholder="Type a message" type="text" />
+              <button onClick={sendMessage} type="submit"></button>
+            </form>
+          </div>
         </div>
       </div>
     );

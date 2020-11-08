@@ -14,16 +14,14 @@ const App = () => {
         <Route exact path="/login">
           <Login />
         </Route>
-        <Route exact path="/forum">
-          <ForumPage />
+        <Route exact path="/chatbot">
+          <ChatBot />
         </Route>
-
         <Route exact path="/">
           <Main />
         </Route>
-
-        <Route exact path="/chatbot">
-          <ChatBot />
+        <Route exact path="/forum">
+          <ForumPage />
         </Route>
 
         <Route exact path="/signup">

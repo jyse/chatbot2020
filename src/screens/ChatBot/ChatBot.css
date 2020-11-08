@@ -1,0 +1,57 @@
+.chat {
+  display: grid;
+  place-items: center;
+  background-color: white;
+  height: 100vh;
+}
+.chat__mainblock {
+  background-image: url(https://scontent-ams4-1.xx.fbcdn.net/v/t31.0-8/14311342_1654292288194295_8206766316452063695_o.png?_nc_cat=100&ccb=2&_nc_sid=730e14&_nc_ohc=FS3NdINw4HAAX-I7cxf&_nc_ht=scontent-ams4-1.xx&oh=0200e7a570f75b989db180f6e463e49b&oe=5FCC00D3);
+  display: flex;
+  flex-direction: column;
+  margin-top: -50px;
+  height: 90vh;
+  width: 38vw;
+  box-shadow: -1px 4px 20px -6px rgba(0, 0, 0, 0.7);
+}
+
+.chat__header {
+  /* #ededed     */
+  background-color: white;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid lightgray;
+}
+
+.chat__header > img {
+  object-fit: contain;
+  height: 50px;
+}
+
+.chat__headerInfo {
+  flex: 1;
+  padding-left: 20px;
+}
+.chat__headerInfo > h3 {
+  margin-bottom: 3px;
+  font-weight: 500;
+}
+
+.chat__headerInfo > p {
+  color: gray;
+}
+
+.chat__headerRight {
+  display: flex;
+  justify-content: space-between;
+  min-width: 100px;
+}
+.chat__headerRight > p {
+  color: gray;
+}
+
+@media (max-width: 768px) {
+  .chat__mainblock {
+    width: 80vw;
+  }
+}

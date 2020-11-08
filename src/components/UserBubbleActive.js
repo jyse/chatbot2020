@@ -8,7 +8,7 @@ const UserBubbleActive = ({
   onAnswer,
 }) => {
   return (
-    <div>
+    <div className="chat__footer">
       <Form
         className="card p-2"
         onSubmit={onAnswer}
