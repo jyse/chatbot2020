@@ -12,25 +12,25 @@ const App = () => {
   const [{ user }, dispatch] = useStateValue();
   return (
     <div className="app">
-      {!user ? (
+      {/* {!user ? (
         <Login />
-      ) : (
-        <Router>
-          <Switch>
-            <Route path="/forum">
-              <ForumPage />
-            </Route>
-            <Route exact path="/">
-              <ChatBot />
-            </Route>
-            <Route path="/main">
-              <Main />
-            </Route>
-            {/* <Route exact path="/signup2">
+      ) : ( */}
+      <Router>
+        <Switch>
+          <Route path="/forum">
+            <ForumPage />
+          </Route>
+          <Route exact path="/">
+            <ChatBot />
+          </Route>
+          <Route path="/main">
+            <Main />
+          </Route>
+          {/* <Route exact path="/signup2">
               <SignUp />
             </Route> */}
-          </Switch>
-        </Router>
+        </Switch>
+      </Router>
       )}
     </div>
   );

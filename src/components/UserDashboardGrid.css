@@ -1,0 +1,113 @@
+/* Assign grid instructions to our parent grid container, mobile-first (hide the sidenav) */
+.main-board {
+  display: grid;
+  background-color: white;
+}
+
+.main-header {
+  display: flex;
+  /* flex-direction: column; */
+  background-color: #efefef;
+  height: fit-content;
+  box-shadow: -1px 4px 20px -6px rgba(0, 0, 0, 0.7);
+  justify-content: space-between;
+  margin: 20px;
+  padding: 20px;
+}
+.main-headerLeft > h2 {
+  font-size: 36px;
+  color: black;
+}
+.main-headerRight > h2 {
+  font-size: 36px;
+  color: black;
+}
+
+.main-headerLeft {
+  flex: 0.35;
+  display: flex;
+  padding: 20px;
+  flex-direction: column;
+}
+.main-headerRight {
+  flex: 0.65;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.main-firstSection {
+  flex-direction: column;
+  background-color: #efefef;
+  height: fit-content;
+  box-shadow: -1px 4px 20px -6px rgba(0, 0, 0, 0.7);
+  justify-content: space-between;
+  margin: 20px;
+  padding: 20px;
+}
+.main-firstSection-title > h1 {
+  padding: 20px;
+  padding-bottom: 0px;
+  font-size: 36px;
+
+  color: black;
+}
+
+.main-overview {
+  display: grid;
+  background: #ededed;
+  padding: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(265px, 1fr));
+
+  grid-auto-rows: 94px;
+  grid-gap: 20px;
+  height: 20vh;
+  margin: 20px;
+}
+.main-overview title {
+  display: flex;
+  flex-direction: row;
+}
+
+.overviewcard {
+  display: flex;
+  flex-direction: column;
+  height: 15vh;
+  align-items: center;
+  justify-content: space-between;
+  padding: 25px;
+  border-radius: 20px;
+}
+.overviewcard__info > h1 {
+  font-size: 46px;
+}
+
+.main-cards {
+  column-count: 2;
+  column-gap: 20px;
+  margin: 20px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  background-color: #efefef;
+  margin-bottom: 20px;
+  -webkit-column-break-inside: avoid;
+  padding: 24px;
+  box-sizing: border-box;
+  box-shadow: -1px 4px 20px -6px rgba(0, 0, 0, 0.7);
+}
+
+.card:first-child {
+  height: 485px;
+}
+
+.card:nth-child(2) {
+  height: 200px;
+}
+
+.card:nth-child(3) {
+  height: 265px;
+}
