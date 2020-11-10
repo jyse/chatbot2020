@@ -6,29 +6,33 @@ import Login from "./screens/Login";
 import SignUp from "./screens/SignUp";
 import ForumPage from "./screens/ForumPage";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { useStateValue } from "./StateProvider";
 
 const App = () => {
+  const [{ user }, dispatch] = useStateValue();
   return (
-    <Router>
-      <Switch>
-        <Route exact path="/login">
-          <Login />
-        </Route>
-        <Route exact path="/chatbot">
-          <ChatBot />
-        </Route>
-        <Route exact path="/">
-          <Main />
-        </Route>
-        <Route exact path="/forum">
-          <ForumPage />
-        </Route>
-
-        <Route exact path="/signup">
-          <SignUp />
-        </Route>
-      </Switch>
-    </Router>
+    <div className="app">
+      {!user ? (
+        <Login />
+      ) : (
+        <Router>
+          <Switch>
+            <Route path="/forum">
+              <ForumPage />
+            </Route>
+            <Route exact path="/">
+              <ChatBot />
+            </Route>
+            <Route path="/main">
+              <Main />
+            </Route>
+            {/* <Route exact path="/signup2">
+              <SignUp />
+            </Route> */}
+          </Switch>
+        </Router>
+      )}
+    </div>
   );
 };
 export default App;

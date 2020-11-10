@@ -1,7 +1,5 @@
 import React from "react";
 import ChatBotBubble from "../../components/ChatBotBubble";
-import UserBubbleActive from "../../components/UserBubbleActive";
-import UserBubbleFinished from "../../components/UserBubbleFinished";
 import { auth, firestore } from "../../firebase";
 import { withRouter } from "react-router-dom";
 import ChatBotBubblePieChart from "../../components/ChatBotBubblePieChart";

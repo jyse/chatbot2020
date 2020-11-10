@@ -1,70 +1,53 @@
 import React, { useState } from "react";
 import "./Login.css";
 import { Link, useHistory } from "react-router-dom";
-import { auth } from "../../firebase";
+import { db, auth, provider } from "../../firebase";
 import gurlogo from "./gurlogo.png";
+import { useStateValue } from "../../StateProvider";
+import { actionTypes } from "../../reducer";
+import { Button } from "@material-ui/core";
 
 function Login() {
-  const history = useHistory();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [{}, dispatch] = useStateValue();
 
-  const signIn = (e) => {
-    e.preventDefault();
-
+  const signIn = () => {
     auth
-      .signInWithEmailAndPassword(email, password)
-      .then((auth) => {
-        history.push("/chatbot");
+      .signInWithPopup(provider)
+      .then((result) => {
+        dispatch({
+          type: actionTypes.SET_USER,
+          user: result.user,
+        });
+        var token = result.credential.accesToken;
+        var user = result.user;
+        var isNewUser = result.additionalUserInfo.isNewUser;
+        console.log(isNewUser, "isNewUser");
+        if (!isNewUser) {
+          db.collection("users").add({
+            userId: result.user.uid,
+            name: result.user.displayName,
+          });
+        }
       })
       .catch((error) => alert(error.message));
   };
+
   return (
     <div className="login">
-      <Link to="/chatbot">
-        <img className="login__logo" alt="chatBotLogo" src={gurlogo} />
-      </Link>
-
       <div className="login__container">
-        <h1>Log in</h1>
-
-        <form>
-          <h5>E-mail</h5>
-          <input
-            type="text"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-
-          <h5>Password</h5>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-
-          <button
-            type="submit"
-            onClick={signIn}
-            className="login__signInButton"
-          >
-            Login
-          </button>
-        </form>
-
-        <p>
+        <img src={gurlogo} alt="" />
+        <div className="login__text">
+          <h1> Welcome! </h1>
+        </div>
+        <Button onClick={signIn}>Login with Google</Button>
+        <p className="login__disclaimer">
           By signing-in you agree to the Get Uncommon results Conditions of Use
           & Sale. Please see our Privacy Notice, our Cookies Notice and our
           Interest-Based Ads Notice.
         </p>
-        <button
-          onClick={() => history.push("/signup")}
-          className="login__registerButton"
-        >
-          Sign up
-        </button>
       </div>
     </div>
   );
 }
+
 export default Login;

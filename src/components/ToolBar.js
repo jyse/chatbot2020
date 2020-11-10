@@ -4,7 +4,6 @@ import "./SideBarToggleButton.css";
 import SideBarToggleButton from "../components/SideBarToggleButton";
 
 const ToolBar = (props) => {
-  console.log(props, "what is in props");
   return (
     <div class="header">
       <div classname="header__toggle-button">

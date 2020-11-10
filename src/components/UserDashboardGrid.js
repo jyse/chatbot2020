@@ -27,49 +27,50 @@ class UserDashboardGrid extends React.Component {
     return (
       <div>
         <div className="grid-container" onClick={props.click}>
-          <main class="main-screen">
-            <div class="main-header">
-              <div class="main-header__heading">
-                <MonthlySalesPieChart />
-                <MonthlyClientPieChart />
-              </div>
-              <div class="main-header__updates">
-                <p> Past month: </p>
-              </div>
+          {/* <main className="main-screen"> */}
+          <div className="main-header">
+            <div className="main-header__heading">
+              <MonthlySalesPieChart />
             </div>
-            <div class="main-overview">
-              <div class="overviewcard">
-                <div class="overviewcard__icon">
-                  <SixMonthLineChart />
-                </div>
-                <div class="overviewcard__info">Card</div>
-              </div>
-              <div class="overviewcard">
-                <div class="overviewcard__icon">
-                  <LastTwentyClientList />
-                </div>
-                <div class="overviewcard__info">Card</div>
-              </div>
-              <div class="overviewcard">
-                <div class="overviewcard__icon">
-                  <DailySalesTipper />
-                </div>
-                <div class="overviewcard__info">Card</div>
-              </div>
-              <div class="overviewcard">
-                <div class="overviewcard__icon">
-                  <Forum />
-                </div>
-                <div class="overviewcard__info">Card</div>
-              </div>
+            <div className="main-header__updates">
+              <p> Past month: </p>
             </div>
+          </div>
+          <div className="main-overview">
+            <div className="overviewcard">
+              <div className="overviewcard__icon">
+                <SixMonthLineChart />
+              </div>
+              <div className="overviewcard__info">Card</div>
+            </div>
+            <div className="overviewcard">
+              <div className="overviewcard__icon">
+                <LastTwentyClientList />
+              </div>
+              <div className="overviewcard__info">Card</div>
+            </div>
+            <div className="overviewcard">
+              <div className="overviewcard__icon">
+                <DailySalesTipper />
+              </div>
+              <div className="overviewcard__info">Card</div>
+            </div>
+            <div className="overviewcard">
+              <div className="overviewcard__icon">
+                <Forum />
+              </div>
+              <div className="overviewcard__info">Card</div>
+            </div>
+          </div>
 
-            <div class="main-cards">
-              <div class="card">Card</div>
-              <div class="card">Card</div>
-              <div class="card">Card</div>
+          <div className="main-cards">
+            <div className="card">
+              <MonthlyClientPieChart />
             </div>
-          </main>
+            <div className="card">Card</div>
+            <div className="card">Card</div>
+          </div>
+          {/* </main> */}
         </div>
       </div>
     );

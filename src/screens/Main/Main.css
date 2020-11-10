@@ -10,7 +10,7 @@ body {
 .grid-container {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 50px 1fr 50px;
+  /* grid-template-rows: 50px 1fr 50px; */
   grid-template-areas:
     "header"
     "main"
@@ -75,7 +75,7 @@ body {
   justify-content: space-between;
   margin: 20px;
   padding: 20px;
-  height: 150px;
+  /* height: 150px; */
   background-color: #e3e4e6;
   color: slategray;
 }

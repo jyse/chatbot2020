@@ -3,7 +3,7 @@ import "./SignUp.css";
 import { Link, useHistory } from "react-router-dom";
 import { auth } from "../../firebase";
 import gurlogo from "../../assets/images/gurlogo.png";
-import { firestore } from "../../firebase";
+import { db } from "../../firebase";
 
 function SignUp() {
   const history = useHistory();
@@ -22,7 +22,7 @@ function SignUp() {
       .then((auth) => {
         // it successfully created a new user with email and password
         if (auth) {
-          firestore.collection("users").add({
+          db.collection("users").add({
             userId: auth.user.uid,
             company: company,
             firstName: firstName,
