@@ -6,7 +6,6 @@
 
 .main-header {
   display: flex;
-  /* flex-direction: column; */
   background-color: #efefef;
   height: fit-content;
   box-shadow: -1px 4px 20px -6px rgba(0, 0, 0, 0.7);
@@ -110,4 +109,28 @@
 
 .card:nth-child(3) {
   height: 265px;
+}
+
+/* Non-mobile styles, 750px breakpoint */
+@media only screen and (min-width: 46.875em) {
+  .header__search {
+    margin-left: 0;
+  }
+
+  .sidenav {
+    position: relative;
+    transform: translateX(0);
+  }
+
+  .sidenav__close-icon {
+    visibility: hidden;
+  }
+}
+
+/* Medium screens breakpoint (1050px) */
+@media only screen and (min-width: 65.625em) {
+  /* Break out main cards into two columns */
+  .main-cards {
+    column-count: 2;
+  }
 }

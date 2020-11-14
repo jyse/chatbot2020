@@ -1,5 +1,4 @@
 import React from "react";
-import chatbotIcon from "./chatbotIcon.png";
 import "./SideBarToggleButton.css";
 
 const SideBarToggleButton = (props) => {

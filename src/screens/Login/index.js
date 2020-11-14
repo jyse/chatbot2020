@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import "./Login.css";
-import { Link, useHistory } from "react-router-dom";
 import { db, auth, provider } from "../../firebase";
 import gurlogo from "./gurlogo.png";
 import { useStateValue } from "../../StateProvider";
@@ -18,11 +17,8 @@ function Login() {
           type: actionTypes.SET_USER,
           user: result.user,
         });
-        var token = result.credential.accesToken;
-        var user = result.user;
         var isNewUser = result.additionalUserInfo.isNewUser;
-        console.log(isNewUser, "isNewUser");
-        if (!isNewUser) {
+        if (isNewUser) {
           db.collection("users").add({
             userId: result.user.uid,
             name: result.user.displayName,

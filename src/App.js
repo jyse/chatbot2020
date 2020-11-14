@@ -1,36 +1,35 @@
 import React from "react";
 import "./App.css";
 import ChatBot from "./screens/ChatBot";
-import Main from "./screens/Main";
+import PageLayout from "./components/PageLayout";
 import Login from "./screens/Login";
 import SignUp from "./screens/SignUp";
-import ForumPage from "./screens/ForumPage";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { useStateValue } from "./StateProvider";
+import UserDashboardGrid from "./components/UserDashboardGrid";
 
 const App = () => {
   const [{ user }, dispatch] = useStateValue();
   return (
     <div className="app">
-      {/* {!user ? (
+      {!user ? (
         <Login />
-      ) : ( */}
-      <Router>
-        <Switch>
-          <Route path="/forum">
-            <ForumPage />
-          </Route>
-          <Route exact path="/">
-            <ChatBot />
-          </Route>
-          <Route path="/main">
-            <Main />
-          </Route>
-          {/* <Route exact path="/signup2">
+      ) : (
+        <Router>
+          <PageLayout>
+            <Switch>
+              <Route exact path="/board/:userDocId">
+                <UserDashboardGrid />
+              </Route>
+              <Route exact path="/chatbot/:userId">
+                <ChatBot />
+              </Route>
+              {/* <Route exact path="/signup2">
               <SignUp />
             </Route> */}
-        </Switch>
-      </Router>
+            </Switch>
+          </PageLayout>
+        </Router>
       )}
     </div>
   );

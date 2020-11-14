@@ -1,104 +1,117 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./UserDashboardGrid.css";
-// import MonthlyClientPieChart from "../components/MonthlyClientPieChart";
-// import MonthlySalesPieChart from "../components/MonthlySalesPieChart";
-// import SixMonthLineChart from "../components/SixMonthLineChart";
-// import LastTwentyClientList from "../components/LastTwentyClientList";
-// import DailySalesTipper from "../components/DailySalesTipper";
-// import Forum from "../components/Forum";
-import { VictoryPie, VictoryChart, VictoryTheme, VictoryBar } from "victory";
-import { Link } from "react-router-dom";
-import { auth, firestore } from "../firebase";
+import { VictoryPie } from "victory";
+import { db } from "../firebase";
 import { withRouter } from "react-router-dom";
 
-const INITIAL_STATE = {
-  currentUser: "",
-  monthlySalesData: [],
-  monthlyClientData: [],
-};
+import { useStateValue } from "./../StateProvider";
+import { v4 as uuidv4 } from "uuid";
 
-class UserDashboardGrid extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = INITIAL_STATE;
-  }
+// NOT filled chatbot in today - welcome state
+// Filled chatbot in today - number state
 
-  render() {
-    let props = this.props;
-    return (
-      <div>
-        <div className="main-board" onClick={props.click}>
-          <div className="main-firstSection">
-            <div className="main-firstSection-title">
-              <h1>Today's numbers</h1>
-            </div>
-            <div className="main-overview">
-              <div
-                className="overviewcard"
-                style={{ backgroundColor: "#F0AB3A" }}
-              >
-                <div className="overviewcard__icon">
-                  <h1> Potential Clients</h1>
-                </div>
-                <div className="overviewcard__info">
-                  <h1>23</h1>
-                </div>
+// list
+// Todays numbers - 5 cards - welcome state everything zero, others filled in
+// monthly result - welcome state not visible, otherwise filled in
+// videos of the week / sales tip / Quote - welcome state visible, filled in also visible but below everything;
+
+function UserDashboardGrid() {
+  const [numbersFilled, setNumbersFilled] = useState("");
+  const [messages, setMessages] = useState([]);
+  const [{ user }, dispatch] = useStateValue();
+
+  useEffect(() => {
+    if (user) {
+      db.collection("users")
+        .doc(user.uid)
+        .collection("messages")
+        .orderBy("timestamp", "asc")
+        .onSnapshot((snapshot) => {
+          const messages = snapshot.docs.map((doc) => {
+            let data = doc.data();
+            if (!Reflect.has(data, "id")) {
+              data.id = uuidv4();
+            }
+            return data;
+          });
+          setMessages(messages);
+        });
+    }
+  }, [user.uid]);
+
+  return (
+    <div>
+      {/* onClick={props.click} */}
+      <div className="main-board">
+        <div className="main-firstSection">
+          <div className="main-firstSection-title">
+            <h1>Today's numbers</h1>
+          </div>
+          <div className="main-overview">
+            <div
+              className="overviewcard"
+              style={{ backgroundColor: "#F0AB3A" }}
+            >
+              <div className="overviewcard__icon">
+                <h1> Potential Clients</h1>
               </div>
-              <div
-                className="overviewcard"
-                style={{ backgroundColor: "#9AC2C5" }}
-              >
-                <div className="overviewcard__icon">
-                  <h1>Calls</h1>
-                </div>
-                <div className="overviewcard__info">
-                  <h1>15</h1>
-                </div>
-              </div>
-              <div
-                className="overviewcard"
-                style={{ backgroundColor: "#CDE7BE" }}
-              >
-                <div className="overviewcard__icon">
-                  <h1>Appointments</h1>
-                </div>
-                <div className="overviewcard__info">
-                  <h1>5</h1>
-                </div>
-              </div>
-              <div
-                className="overviewcard"
-                style={{ backgroundColor: "#AA7DCE" }}
-              >
-                <div className="overviewcard__icon">
-                  <h1>Pitches</h1>
-                </div>
-                <div className="overviewcard__info">
-                  <h1>2</h1>
-                </div>
-              </div>
-              <div
-                className="overviewcard"
-                style={{ backgroundColor: "#7E7F9A" }}
-              >
-                <div className="overviewcard__icon">
-                  <h1>Sales made</h1>
-                </div>
-                <div className="overviewcard__info">
-                  <h1>1</h1>
-                </div>
+              <div className="overviewcard__info">
+                <h1>23</h1>
               </div>
             </div>
-            <div className="main-firstSection-end">
-              {/* <Link to={`/chatbot/${id}`}> */}
-              <h1>
-                If you haven't put in your numbers, please let the chatbot help
-                you here!
-              </h1>
-              {/* </Link> */}
+            <div
+              className="overviewcard"
+              style={{ backgroundColor: "#9AC2C5" }}
+            >
+              <div className="overviewcard__icon">
+                <h1>Calls</h1>
+              </div>
+              <div className="overviewcard__info">
+                <h1>15</h1>
+              </div>
+            </div>
+            <div
+              className="overviewcard"
+              style={{ backgroundColor: "#CDE7BE" }}
+            >
+              <div className="overviewcard__icon">
+                <h1>Appointments</h1>
+              </div>
+              <div className="overviewcard__info">
+                <h1>5</h1>
+              </div>
+            </div>
+            <div
+              className="overviewcard"
+              style={{ backgroundColor: "#AA7DCE" }}
+            >
+              <div className="overviewcard__icon">
+                <h1>Pitches</h1>
+              </div>
+              <div className="overviewcard__info">
+                <h1>2</h1>
+              </div>
+            </div>
+            <div
+              className="overviewcard"
+              style={{ backgroundColor: "#7E7F9A" }}
+            >
+              <div className="overviewcard__icon">
+                <h1>Sales made</h1>
+              </div>
+              <div className="overviewcard__info">
+                <h1>1</h1>
+              </div>
             </div>
           </div>
-
+          <div className="main-firstSection-end">
+            <h1>
+              If you haven't put in your numbers, please let the chatbot help
+              you here!
+            </h1>
+          </div>
+        </div>
+        {numbersFilled && (
           <div className="main-header">
             <div className="main-headerLeft">
               <h2> Past month's results </h2>
@@ -114,38 +127,22 @@ class UserDashboardGrid extends React.Component {
                 ]}
               />
             </div>
-            <div className="main-headerRight">
+            <div className="main-headerRight" style={{ color: "black" }}>
               <h2> Sales tips based on your monthly numbers</h2>
               <p> </p>
             </div>
           </div>
-
-          <div className="main-cards">
-            <div className="card">
-              <VictoryChart
-                theme={VictoryTheme.material}
-                domainPadding={{ x: 15 }}
-              >
-                <VictoryBar
-                  barRatio={0.8}
-                  style={{
-                    data: { fill: "#c43a31" },
-                  }}
-                  data={[
-                    { x: "Cats", y: 35 },
-                    { x: "Dogs", y: 40 },
-                    { x: "Birds", y: 55 },
-                    { x: "Dino's", y: 20 },
-                  ]}
-                />
-              </VictoryChart>
-            </div>
-            <div className="card">Card</div>
-            <div className="card">Card</div>
+        )}
+        <div className="main-cards">
+          <div className="card">
+            <h1> Video</h1>
           </div>
+          <div className="card">Sales tip of the week</div>
+          <div className="card">Book tip</div>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
+
 export default withRouter(UserDashboardGrid);

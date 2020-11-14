@@ -1,12 +1,11 @@
 import React, { Component } from "react";
-import { auth, firestore } from "../../firebase";
 import { withRouter } from "react-router-dom";
-import "./Main.css";
-import SideNavigation from "../../components/SideNavigation";
-import ToolBar from "../../components/ToolBar";
-import UserDashboardGrid from "../../components/UserDashboardGrid";
+import "./PageLayout.css";
+import SideNavigation from "./SideNavigation";
+import ToolBar from "./ToolBar";
+import UserDashboardGrid from "./UserDashboardGrid";
 
-class Main extends React.Component {
+class PageLayout extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -39,9 +38,9 @@ class Main extends React.Component {
       <div>
         <ToolBar sideNavToggleClickHandler={this.sideNavToggleClickHandler} />
         <SideNavigation show={this.state.sideNavigationOpen} />
-        {userDashboardGrid}
+        {this.props.children}
       </div>
     );
   }
 }
-export default withRouter(Main);
+export default withRouter(PageLayout);

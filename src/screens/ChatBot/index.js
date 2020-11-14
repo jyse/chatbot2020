@@ -1,22 +1,20 @@
 import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useStateValue } from "../../StateProvider";
-import ChatBotBubble from "../../components/ChatBotBubble";
-import { auth, db } from "../../firebase";
+import { db } from "../../firebase";
 import { withRouter } from "react-router-dom";
-// import ChatBotBubblePieChart from "../../components/ChatBotBubblePieChart";
-// import ChatBotBubbleBarChart from "../../components/ChatBotBubbleBarChart";
 import "./ChatBot.css";
 import chatbotIcon from "../../components/chatbotIcon.png";
 import firebase from "firebase";
 import { v4 as uuidv4 } from "uuid";
-import { VictoryPie, VictoryLabel } from "victory";
+import { VictoryPie } from "victory";
+import { SettingsInputSvideoRounded } from "@material-ui/icons";
 
 function ChatBot() {
   const [liveAnswer, setLiveAnswer] = useState("");
   const [currentStep, setCurrentStep] = useState(0);
+  const [userDocId, setUserDocId] = useState("");
   const [messages, setMessages] = useState([]);
-  const { userId } = useParams();
   const [{ user }, dispatch] = useStateValue();
   const chatBodyRef = useRef(null);
 
@@ -59,8 +57,22 @@ function ChatBot() {
 
   useEffect(() => {
     if (user) {
+      db.collection("users").onSnapshot((snapshot) => {
+        snapshot.docs.map((doc) => {
+          let data = doc.data();
+          if (data.userId === user.uid) {
+            let userDocId = doc.id;
+            setUserDocId(userDocId);
+          }
+        });
+      });
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (userDocId) {
       db.collection("users")
-        .doc(user.uid)
+        .doc(userDocId)
         .collection("messages")
         .orderBy("timestamp", "asc")
         .onSnapshot((snapshot) => {
@@ -74,15 +86,13 @@ function ChatBot() {
           setMessages(messages);
         });
     }
-    console.log(messages, "what is in messages?");
-  }, [user.uid]);
+  }, [userDocId]);
 
   const nextStep = () => {
     setCurrentStep((currentStep) => currentStep + 1);
   };
 
   useLayoutEffect(() => {
-    console.log("in use layout effect", messages, chatBodyRef);
     chatBodyRef.current.scrollTo(0, chatBodyRef.current.scrollHeight);
   }, [messages]);
 
@@ -92,27 +102,18 @@ function ChatBot() {
     [ ] Add a isSending flag, so you can display a loader/spinner and
     */
     e.preventDefault();
-    console.log(currentStep, "what is currentStep?");
-    const answer = {
+    db.collection("users").doc(userDocId).collection("messages").add({
       id: uuidv4(),
       answer: liveAnswer,
       question: QUESTIONS[currentStep].question,
+      key: QUESTIONS[currentStep].key,
       name: user.displayName,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-    };
-    db.collection("users").doc(user.uid).collection("messages").add(answer);
-    setMessages((messages) => [...messages, answer]);
+    });
+    setMessages((messages) => [...messages, liveAnswer]);
     setLiveAnswer("");
     nextStep();
   };
-
-  /*
-
-  TODO: scroll to the bottom of the chat after loading messages
-    Might need to use the useLayoutEffect for that
-  */
-
-  console.log({ messages });
 
   const chatboxQuestion = QUESTIONS[currentStep]?.question;
 
@@ -146,7 +147,7 @@ function ChatBot() {
               ) : null}
               {message.answer ? (
                 <p
-                  key={message.id}
+                  key={`${message.id}-message`}
                   className={`chat__message ${
                     message.name === user.displayName && "chat__receiver"
                   }`}
