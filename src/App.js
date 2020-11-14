@@ -1,36 +1,94 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import ChatBot from "./screens/ChatBot";
 import PageLayout from "./components/PageLayout";
 import Login from "./screens/Login";
 import SignUp from "./screens/SignUp";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+} from "react-router-dom";
 import { useStateValue } from "./StateProvider";
-import UserDashboardGrid from "./components/UserDashboardGrid";
+import Dashboard from "./screens/Dashboard/Dashboard";
+import { auth, db } from "./firebase";
+import { actionTypes } from "./reducer";
+
+const authHoc = (Component) => (props) => {
+  const [{ user }, dispatch] = useStateValue();
+
+  return user ? <Component {...props} /> : <Redirect to="/login" />;
+};
 
 const App = () => {
   const [{ user }, dispatch] = useStateValue();
+  const [isInitialised, setInitialised] = useState(false);
+
+  useEffect(() => {
+    auth.onAuthStateChanged(async (user) => {
+      try {
+        if (user) {
+          console.log("user", user);
+          const userSnap = await db
+            .collection("users")
+            .where("userId", "==", user.uid)
+            .limit(1)
+            .get();
+          console.log("userDo", userSnap);
+          if (userSnap.empty) return;
+
+          const [userDoc] = userSnap.docs;
+          const userData = userDoc.data();
+          console.log({ userData });
+          const payload = {
+            ...user,
+            ...userData,
+          };
+          dispatch({
+            type: actionTypes.SET_USER,
+            user: payload,
+          });
+
+          /*, userDocument).then(/*(querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+              const currentUser = doc.data();
+              this.setState({ currentUser });
+              this.getUserDataForVisual(currentUser);
+            });
+          });*/
+        } else {
+          dispatch({
+            type: actionTypes.SET_USER,
+            user: null,
+          });
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setInitialised(true);
+      }
+    });
+  }, []);
+
+  const Layout = user ? PageLayout : "div";
+
   return (
     <div className="app">
-      {!user ? (
-        <Login />
-      ) : (
-        <Router>
-          <PageLayout>
+      <Router>
+        <Layout>
+          {isInitialised ? (
             <Switch>
-              <Route exact path="/board/:userDocId">
-                <UserDashboardGrid />
-              </Route>
-              <Route exact path="/chatbot/:userId">
-                <ChatBot />
-              </Route>
-              {/* <Route exact path="/signup2">
-              <SignUp />
-            </Route> */}
+              <Route path="/" exact component={Login} />
+              <Route path="/login" component={Login} />
+              <Route path="/board/:userDocId" component={authHoc(Dashboard)} />
+              <Route path="/chatbot/:userId" component={authHoc(ChatBot)} />
             </Switch>
-          </PageLayout>
-        </Router>
-      )}
+          ) : (
+            <p>Loading...</p>
+          )}
+        </Layout>
+      </Router>
     </div>
   );
 };

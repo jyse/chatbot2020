@@ -1,26 +1,62 @@
 import React, { useState, useEffect } from "react";
 import { VictoryPie, VictoryLabel } from "victory";
+import { db } from "../firebase";
 
 const DayPieChart = (props) => {
   const [userDocId, setUserDocId] = useState(props.userDocId);
   const [dailyMessages, setDailyMessages] = useState([]);
+  const [dailyData, setVisualDailyData] = useState([]);
+  const { userId } = props;
 
   useEffect(() => {
-    if (userDocId) {
-      db.collection("users")
-        .doc(userDocId)
+    if (!userId) return;
+    (async () => {
+      let dailyMessages = [];
+
+      const messagesSnapshot = await db
+        .collection("users")
+        .doc(userId)
         .collection("messages")
-        .onSnapshot((snapshot) => {
-          snapshot.docs.map((doc) => {
-            if (doc.data().timestamp > Date(Date.now() - 24 * 60 * 60 * 1000)) {
-              console.log(doc.data());
-              setDailyMessages(doc.data());
-            }
-          });
+        .orderBy("timestamp", "desc")
+        .where("timestamp", ">", new Date(Date.now() - 24 * 60 * 60 * 1000))
+        .get();
+
+      messagesSnapshot.forEach((snap) => {
+        const data = doc.data();
+        dailyMessages.push(data);
+      });
+
+      console.log({ messagesSnapshot, dailyMessages });
+      createVisualDailyData(dailyMessages);
+    })();
+
+    /*
+      .where("timestamp", ">", Date.now() - 24 * 60 * 60 * 1000)
+      .onSnapshot((snapshot) => {
+        snapshot.docs.map((doc) => {
+          let twentyFourHrsAgo = Date.now() - 24 * 60 * 60 * 1000;
+
+          if (
+            doc.data().timestamp &&
+            doc.data().timestamp.seconds > twentyFourHrsAgo
+          ) {
+          //   console.log(doc.data(), "what is in data()");
+          //   console.log(doc.data().timestamp, "what is in data()");
+          //   console.log(doc.data().timestamp.seconds, "what is in data()");
+          //   dailyMessages.push(doc.data());
+          // }
+          console.log(dailyMessages, "what is in dailyMessages");
+          createVisualDailyData(dailyMessages);
         });
-    }
-    console.log(dailyMessages, "dailyMessages");
-  }, [userDocId]);
+          });*/
+  }, [userId]);
+
+  const createVisualDailyData = (messages) => {
+    messages.map((message) => {
+      //   console.log(message, "each message given to createVisualDataDaily");
+      //   setVisualDailyData(dailyData)
+    });
+  };
 
   return (
     <div className="piechart-area" style={{ width: 350, height: 350 }}>
@@ -41,6 +77,7 @@ const DayPieChart = (props) => {
 export default DayPieChart;
 
 {
+  // 24 * 60 * 60 * 1000
   /* <VictoryPie
 colorScale={["tomato", "orange", "gold", "cyan", "navy"]}
 width={250}
@@ -66,3 +103,18 @@ data={[
 //       props.userData[index]["x"] = newKey;
 //     }
 //   });
+
+// => {
+// //   if (doc.data().timestamp >   ate(Date.now() - 24 * 60 * 60 * 1000)) {
+//     console.log(doc.data(), "messages of the pas 24 hours");
+// setDailyMessages(doc.data());
+//   }
+// });
+//   });
+
+//   console.log(doc.data().timestamp.seconds, "what is seconds");
+// console.log(twentyFourHrsAgo, "24hours ago ");
+// if (doc.data().timestamp?.seconds > twentyFourHrsAgo) {
+//   console.log(doc.data());
+//   return doc.data();
+// }

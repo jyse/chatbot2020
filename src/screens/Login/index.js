@@ -1,15 +1,18 @@
 import React from "react";
 import "./Login.css";
-import { db, auth, provider } from "../../firebase";
+import { db, auth, provider, firebaseApp } from "../../firebase";
 import gurlogo from "./gurlogo.png";
 import { useStateValue } from "../../StateProvider";
 import { actionTypes } from "../../reducer";
 import { Button } from "@material-ui/core";
+import { Redirect } from "react-router-dom";
+import firebase from "firebase/app";
 
 function Login() {
-  const [{}, dispatch] = useStateValue();
+  const [{ user }, dispatch] = useStateValue();
 
-  const signIn = () => {
+  const signIn = async () => {
+    await auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
     auth
       .signInWithPopup(provider)
       .then((result) => {
@@ -19,7 +22,8 @@ function Login() {
         });
         var isNewUser = result.additionalUserInfo.isNewUser;
         if (isNewUser) {
-          db.collection("users").add({
+          const { uid } = result.user;
+          db.collection("users").doc(uid).set({
             userId: result.user.uid,
             name: result.user.displayName,
           });
@@ -28,7 +32,11 @@ function Login() {
       .catch((error) => alert(error.message));
   };
 
-  return (
+  console.log({ user });
+
+  return user ? (
+    <Redirect to={`/board/${user.uid}`} />
+  ) : (
     <div className="login">
       <div className="login__container">
         <img src={gurlogo} alt="" />

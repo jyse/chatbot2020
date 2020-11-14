@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./UserDashboardGrid.css";
 import { VictoryPie } from "victory";
 import { db } from "../firebase";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 
 import { useStateValue } from "./../StateProvider";
 import { v4 as uuidv4 } from "uuid";
@@ -106,8 +106,10 @@ function UserDashboardGrid() {
           </div>
           <div className="main-firstSection-end">
             <h1>
-              If you haven't put in your numbers, please let the chatbot help
-              you here!
+              <Link to={`/chatbot/${user?.uid}`}>
+                If you haven't put in your numbers, please let the chatbot help
+                you here!
+              </Link>
             </h1>
           </div>
         </div>

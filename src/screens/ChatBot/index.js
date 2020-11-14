@@ -5,6 +5,7 @@ import { db } from "../../firebase";
 import { withRouter } from "react-router-dom";
 import "./ChatBot.css";
 import chatbotIcon from "../../components/chatbotIcon.png";
+import DayPieChart from "../../components/DayPieChart";
 import firebase from "firebase";
 import { v4 as uuidv4 } from "uuid";
 import { VictoryPie } from "victory";
@@ -13,7 +14,7 @@ import { SettingsInputSvideoRounded } from "@material-ui/icons";
 function ChatBot() {
   const [liveAnswer, setLiveAnswer] = useState("");
   const [currentStep, setCurrentStep] = useState(0);
-  const [userDocId, setUserDocId] = useState("");
+  // const [userDocId, setUserDocId] = useState("");
   const [messages, setMessages] = useState([]);
   const [{ user }, dispatch] = useStateValue();
   const chatBodyRef = useRef(null);
@@ -55,7 +56,7 @@ function ChatBot() {
     },
   };
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (user) {
       db.collection("users").onSnapshot((snapshot) => {
         snapshot.docs.map((doc) => {
@@ -67,26 +68,25 @@ function ChatBot() {
         });
       });
     }
-  }, [user]);
-
+  }, [user]);*/
+  const userId = user?.uid;
   useEffect(() => {
-    if (userDocId) {
-      db.collection("users")
-        .doc(userDocId)
-        .collection("messages")
-        .orderBy("timestamp", "asc")
-        .onSnapshot((snapshot) => {
-          const messages = snapshot.docs.map((doc) => {
-            let data = doc.data();
-            if (!Reflect.has(data, "id")) {
-              data.id = uuidv4();
-            }
-            return data;
-          });
-          setMessages(messages);
+    if (!userId) return;
+    db.collection("users")
+      .doc(userId)
+      .collection("messages")
+      .orderBy("timestamp", "asc")
+      .onSnapshot((snapshot) => {
+        const messages = snapshot.docs.map((doc) => {
+          let data = doc.data();
+          if (!Reflect.has(data, "id")) {
+            data.id = uuidv4();
+          }
+          return data;
         });
-    }
-  }, [userDocId]);
+        setMessages(messages);
+      });
+  }, [userId]);
 
   const nextStep = () => {
     setCurrentStep((currentStep) => currentStep + 1);
@@ -102,7 +102,7 @@ function ChatBot() {
     [ ] Add a isSending flag, so you can display a loader/spinner and
     */
     e.preventDefault();
-    db.collection("users").doc(userDocId).collection("messages").add({
+    db.collection("users").doc(userId).collection("messages").add({
       id: uuidv4(),
       answer: liveAnswer,
       question: QUESTIONS[currentStep].question,
@@ -171,17 +171,7 @@ function ChatBot() {
             <div className="chat__message chat__chatbot">
               <span className="chat__name">ChatBot</span>
               <p>You're done! This is your summary for today!</p>
-              <VictoryPie
-                colorScale={["tomato", "orange", "gold", "cyan", "navy"]}
-                width={250}
-                height={250}
-                data={[
-                  { x: "Cats", y: 35 },
-                  { x: "Dogs", y: 40 },
-                  { x: "Birds", y: 55 },
-                  { x: "Dino's", y: 20 },
-                ]}
-              />
+              <DayPieChart userId={userId} />
               <p> Keep up the good work! </p>
               <span className="chat__timestamp">Time now</span>
             </div>
