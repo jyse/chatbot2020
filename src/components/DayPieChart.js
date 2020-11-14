@@ -6,115 +6,123 @@ const DayPieChart = (props) => {
   const [userDocId, setUserDocId] = useState(props.userDocId);
   const [dailyMessages, setDailyMessages] = useState([]);
   const [dailyData, setVisualDailyData] = useState([]);
+  const [dailySalesData, setVisualDailySalesData] = useState([]);
   const { userId } = props;
+  const keys = [
+    "potentialClients",
+    "calls",
+    "appointments",
+    "pitches",
+    "sales",
+  ];
 
   useEffect(() => {
     if (!userId) return;
     (async () => {
       let dailyMessages = [];
-
+      // now set on 1 hour
       const messagesSnapshot = await db
         .collection("users")
         .doc(userId)
         .collection("messages")
         .orderBy("timestamp", "desc")
-        .where("timestamp", ">", new Date(Date.now() - 24 * 60 * 60 * 1000))
+        .where("timestamp", ">", new Date(Date.now() - 60 * 60 * 1000))
         .get();
 
       messagesSnapshot.forEach((snap) => {
-        const data = doc.data();
+        const data = snap.data();
         dailyMessages.push(data);
       });
 
-      console.log({ messagesSnapshot, dailyMessages });
-      createVisualDailyData(dailyMessages);
+      let dailyData = createVisualDailyData(dailyMessages);
+      let dailySalesData = createVisualDailySalesData(dailyMessages);
+
+      setVisualDailyData(dailyData);
+      setVisualDailySalesData(dailySalesData);
     })();
-
-    /*
-      .where("timestamp", ">", Date.now() - 24 * 60 * 60 * 1000)
-      .onSnapshot((snapshot) => {
-        snapshot.docs.map((doc) => {
-          let twentyFourHrsAgo = Date.now() - 24 * 60 * 60 * 1000;
-
-          if (
-            doc.data().timestamp &&
-            doc.data().timestamp.seconds > twentyFourHrsAgo
-          ) {
-          //   console.log(doc.data(), "what is in data()");
-          //   console.log(doc.data().timestamp, "what is in data()");
-          //   console.log(doc.data().timestamp.seconds, "what is in data()");
-          //   dailyMessages.push(doc.data());
-          // }
-          console.log(dailyMessages, "what is in dailyMessages");
-          createVisualDailyData(dailyMessages);
-        });
-          });*/
   }, [userId]);
 
-  const createVisualDailyData = (messages) => {
-    messages.map((message) => {
-      //   console.log(message, "each message given to createVisualDataDaily");
-      //   setVisualDailyData(dailyData)
+  const createVisualDailyData = (dailyMessages) => {
+    let dailyDataArray = [];
+
+    dailyMessages.map((message) => {
+      if (message.key !== "revenue") {
+        dailyDataArray.push({
+          x: message.key,
+          y: parseInt(message.answer),
+        });
+      }
     });
+
+    return makeData(dailyDataArray, "clients");
+  };
+
+  const createVisualDailySalesData = (dailyMessages) => {
+    let dailySalesDataArray = [];
+
+    dailyMessages.map((message) => {
+      if (message.key == "revenue") {
+        dailySalesDataArray.push({
+          x: message.key,
+          y: parseInt(message.answer),
+        });
+      }
+    });
+
+    return makeData(dailySalesDataArray, "money");
+  };
+
+  const makeData = (data, label) => {
+    let totalCount = 0;
+    let madeData = data.reduce((acc, { x, y }) => {
+      if (!Reflect.has(acc, x)) acc[x] = 0;
+
+      let count = parseInt(y);
+
+      if (Number.isInteger(count)) {
+        acc[x] += y;
+      }
+      return acc;
+    }, {});
+
+    let visualUserData = Object.entries(madeData).map(([key, count]) => ({
+      x: count + " " + key,
+      y: count,
+    }));
+    return visualUserData;
   };
 
   return (
     <div className="piechart-area" style={{ width: 350, height: 350 }}>
       <p>PieChart Baby</p>
-      {/* <VictoryPie
-        data={0}
-        width={150}
-        height={150}
-        colorScale={["tomato", "orange", "gold", "cyan", "navy"]}
+      <VictoryPie
+        data={dailyData}
+        width={180}
+        height={180}
+        colorScale={["tomato", "orange", "gold", "cyan", "navy", "lightgreen"]}
         style={{
-          labels: { fill: "black", fontSize: 4 },
+          labels: { fill: "black", fontSize: 6 },
         }}
-      /> */}
+      />
     </div>
   );
 };
 
 export default DayPieChart;
 
-{
-  // 24 * 60 * 60 * 1000
-  /* <VictoryPie
-colorScale={["tomato", "orange", "gold", "cyan", "navy"]}
-width={250}
-height={250}
-data={[
-    { x: "Cats", y: 35 },
-    { x: "Dogs", y: 40 },
-    { x: "Birds", y: 55 },
-    { x: "Dino's", y: 20 },
-]}
-/> */
-}
-//   let total = 0;
-//   props.userData.map((objectAnswer) => {
-//     total += objectAnswer.y;
-//   });
+// setting for the past 24 hours
+// new Date(Date.now() - 24 * 60 * 60 * 1000))
 
-//   props.userData.map((objectAnswer, index) => {
-//     const percentage = parseInt((objectAnswer.y / total) * 100) + "% ";
-//     const newKey = percentage + objectAnswer.x;
+//
+//   let test = createVisualDailyData(dailyMessages);
+//   console.log(test, "what is test hier?");
+//   setVisualDailyData(createVisualDailyData(dailyMessages));
+//   setVisualDailySalesData(createVisualDailyData(dailyMessages));
 
-//     if ((props.userData[index]["x"] = objectAnswer.x)) {
-//       props.userData[index]["x"] = newKey;
+//   useEffect(() => {
+//     if (dailyMessages.length !== 0) {
+//       dailyMessages.map((message) => {
+//         console.log(message, "what is message here? in this useEffect");
+//       });
 //     }
-//   });
-
-// => {
-// //   if (doc.data().timestamp >   ate(Date.now() - 24 * 60 * 60 * 1000)) {
-//     console.log(doc.data(), "messages of the pas 24 hours");
-// setDailyMessages(doc.data());
-//   }
-// });
-//   });
-
-//   console.log(doc.data().timestamp.seconds, "what is seconds");
-// console.log(twentyFourHrsAgo, "24hours ago ");
-// if (doc.data().timestamp?.seconds > twentyFourHrsAgo) {
-//   console.log(doc.data());
-//   return doc.data();
-// }
+//   }, [dailyMessages]);

@@ -29,18 +29,15 @@ const App = () => {
     auth.onAuthStateChanged(async (user) => {
       try {
         if (user) {
-          console.log("user", user);
           const userSnap = await db
             .collection("users")
             .where("userId", "==", user.uid)
             .limit(1)
             .get();
-          console.log("userDo", userSnap);
           if (userSnap.empty) return;
 
           const [userDoc] = userSnap.docs;
           const userData = userDoc.data();
-          console.log({ userData });
           const payload = {
             ...user,
             ...userData,

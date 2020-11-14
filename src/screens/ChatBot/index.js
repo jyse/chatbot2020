@@ -23,7 +23,7 @@ function ChatBot() {
     0: {
       question:
         "1. How many potential clients did you contact today? Use numbers ",
-      key: "potentialClients",
+      key: "potential clients",
       buttonOn: true,
     },
     1: {

@@ -70,7 +70,7 @@
 .overviewcard {
   display: flex;
   flex-direction: column;
-  min-height: 15vh;
+  max-height: 15vh;
   align-items: center;
   justify-content: space-between;
   padding: 25px;
