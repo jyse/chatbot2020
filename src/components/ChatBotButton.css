@@ -1,0 +1,27 @@
+.chatbot-button-container {
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  padding: 25px;
+}
+
+.button {
+  background-color: rgb(217, 152, 33);
+  width: 60px;
+  height: 60px;
+  border-top-left-radius: 50%;
+  border-top-right-radius: 50%;
+  border-bottom-right-radius: 50%;
+  border-bottom-left-radius: 50%;
+  box-shadow: rgba(0, 0, 0, 0.06) 0px 1px 6px 0px,
+    rgba(0, 0, 0, 0.16) 0px 2px 32px 0px;
+  border: none;
+}
+
+.button > .MuiSvgIcon-root {
+  width: 35px;
+  height: 35px;
+  color: white;
+  align-items: center;
+  padding: 1px;
+}

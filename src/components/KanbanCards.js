@@ -7,7 +7,8 @@ function KanbanCards(props) {
   const [dailyMessages, setDailyMessages] = useState([]);
   const [dailyData, setVisualDailyData] = useState([]);
   const [dailySalesData, setVisualDailySalesData] = useState([]);
-  const { userId, numbersFilled } = props;
+  const [numbersFilled, setNumbersFilled] = useState(false);
+  const { userId } = props;
   const keys = [
     "potentialClients",
     "calls",
@@ -24,7 +25,7 @@ function KanbanCards(props) {
         .doc(userId)
         .collection("messages")
         .orderBy("timestamp", "desc")
-        .where("timestamp", ">", new Date(Date.now() - 24 * 60 * 60 * 1000))
+        .where("timestamp", ">", new Date(Date.now() - 12 * 60 * 60 * 1000))
         .get();
 
       messagesSnapshot.forEach((snap) => {
@@ -35,6 +36,10 @@ function KanbanCards(props) {
       let dailyData = createVisualDailyData(dailyMessages);
       let dailySalesData = createVisualDailySalesData(dailyMessages);
 
+      console.log(dailyData, "what is in messages now?");
+      if (dailyData.length !== 0) {
+        setNumbersFilled(true);
+      }
       setVisualDailyData(dailyData);
       setVisualDailySalesData(dailySalesData);
     })();
@@ -108,34 +113,20 @@ function KanbanCards(props) {
     },
   };
 
-  console.log(
-    BACKGROUND_COLORS["potential clients"]["color"],
-    "what is in key"
-  );
-  //   const Card = (question, value) => {
-  //     if (dailyData)
-  //       const cards = (
-  //         <div className="overviewcard" style={{ backgroundColor: "#F0AB3A" }}>
-  //           <div className="overviewcard__icon">
-  //             <h1> Potential Clients</h1>
-  //           </div>
-  //           <div className="overviewcard__info">
-  //             <h1>23</h1>
-  //           </div>
-  //         </div>
-  //       );
-  //     return cards;
-  //   };
-
-  console.log(dailyData, "what is in dailyData?");
-
+  const dailyDataStandard = [
+    { x: "Potential clients", y: 0, color: "#F0AB3A" },
+    { x: "Calls", y: 0, color: "#9AC2C5" },
+    { x: "Appointments", y: 0, color: "#CDE7BE" },
+    { x: "Pitches", y: 0, color: "#AA7DCE" },
+    { x: "Sales", y: 0, color: "#7E7F9A" },
+  ];
   return (
     <div className="main-overview">
-      {!numbersFilled
-        ? dailyData.map((card) => (
+      {dailyData.length == 0
+        ? dailyDataStandard.map((card) => (
             <div
               className="overviewcard"
-              style={{ backgroundColor: BACKGROUND_COLORS[card.x].color }}
+              style={{ backgroundColor: card.color }}
             >
               <div className="overviewcard__icon">
                 <h1>{card.x}</h1>
@@ -145,10 +136,12 @@ function KanbanCards(props) {
               </div>
             </div>
           ))
-        : dailyData.map((card) => (
+        : dailyData.map((card, index) => (
             <div
               className="overviewcard"
-              style={{ backgroundColor: BACKGROUND_COLORS[card.x].color }}
+              style={{
+                backgroundColor: BACKGROUND_COLORS[card.x].color,
+              }}
             >
               <div className="overviewcard__icon">
                 <h1>{card.x}</h1>

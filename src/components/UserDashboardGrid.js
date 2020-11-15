@@ -7,41 +7,55 @@ import { withRouter, Link } from "react-router-dom";
 import { useStateValue } from "./../StateProvider";
 import { v4 as uuidv4 } from "uuid";
 import KanbanCards from "./KanbanCards";
+import ChatBotButton from "./ChatBotButton";
+import ChatBot from "./../screens/ChatBot";
 
-function UserDashboardGrid() {
-  const [numbersFilled, setNumbersFilled] = useState(false);
+function UserDashboardGrid(props) {
+  const [dailyMessages, setDailyMessages] = useState([]);
   const [messages, setMessages] = useState([]);
   const [{ user }, dispatch] = useStateValue();
+  const [numbersFilled, setNumbersFilled] = useState(false);
+  const { click } = props;
   const userId = user?.uid;
+  const [chatBotOpen, setShowChat] = useState(false);
+
+  const chatBotPopUp = () => {
+    setShowChat(true);
+  };
 
   useEffect(() => {
-    if (user) {
-      db.collection("users")
+    if (!userId) return;
+    (async () => {
+      let dailyMessages = [];
+      // now set on 24 hour
+      const messagesSnapshot = await db
+        .collection("users")
         .doc(userId)
         .collection("messages")
-        .orderBy("timestamp", "asc")
-        .onSnapshot((snapshot) => {
-          const messages = snapshot.docs.map((doc) => {
-            let data = doc.data();
-            if (!Reflect.has(data, "id")) {
-              data.id = uuidv4();
-            }
-            return data;
-          });
-          setMessages(messages);
-        });
-    }
+        .orderBy("timestamp", "desc")
+        .where("timestamp", ">", new Date(Date.now() - 24 * 60 * 60 * 1000))
+        .get();
+
+      messagesSnapshot.forEach((snap) => {
+        const data = snap.data();
+        dailyMessages.push(data);
+      });
+
+      if (dailyMessages.length > 0) {
+        setNumbersFilled(true);
+      }
+      setDailyMessages(dailyMessages);
+    })();
   }, [userId]);
 
   return (
     <div>
-      {/* onClick={props.click} */}
-      <div className="main-board">
+      <div className="main-board" onClick={click}>
         <div className="main-firstSection">
           <div className="main-firstSection-title">
             <h1>Today's numbers</h1>
           </div>
-          <KanbanCards userId={userId} numbersFilled={numbersFilled} />
+          <KanbanCards userId={userId} />
 
           <div className="main-firstSection-end">
             <h1>
@@ -90,20 +104,12 @@ function UserDashboardGrid() {
           </div>
         </div>
       </div>
+      <div className="btn" onClick={chatBotPopUp}>
+        <ChatBotButton click={chatBotOpen} />
+        <ChatBot show={chatBotOpen} />
+      </div>
     </div>
   );
 }
 
 export default withRouter(UserDashboardGrid);
-
-// colorScale={["tomato", "orange", "gold", "cyan", "navy"]}
-// width={200}
-// height={200}
-// data=
-// {[
-//   { x: "Cats", y: 35 },
-//   { x: "Dogs", y: 40 },
-//   { x: "Birds", y: 55 },
-//   { x: "Dino's", y: 20 },
-// ]}
-// />
