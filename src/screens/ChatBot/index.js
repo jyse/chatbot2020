@@ -173,6 +173,7 @@ function ChatBot() {
               <p>You're done! This is your summary for today!</p>
               <DayPieChart userId={userId} />
               <p> Keep up the good work! </p>
+              <p> STILL SHOW THE DAILY SALES IN EUROS / DOLLARS</p>
               <span className="chat__timestamp">Time now</span>
             </div>
           )}

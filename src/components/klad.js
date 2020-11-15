@@ -76,3 +76,29 @@
 //       });
 //     }
 //   }, [dailyMessages]);
+
+/*useEffect(() => {
+    if (user) {
+      db.collection("users").onSnapshot((snapshot) => {
+        snapshot.docs.map((doc) => {
+          let data = doc.data();
+          if (data.userId === user.uid) {
+            let userDocId = doc.id;
+            setUserDocId(userDocId);
+          }
+        });
+      });
+    }
+  }, [user]);*/
+
+// colorScale={["tomato", "orange", "gold", "cyan", "navy"]}
+// width={200}
+// height={200}
+// data=
+// {[
+//   { x: "Cats", y: 35 },
+//   { x: "Dogs", y: 40 },
+//   { x: "Birds", y: 55 },
+//   { x: "Dino's", y: 20 },
+// ]}
+// />

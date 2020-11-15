@@ -46,14 +46,6 @@ const App = () => {
             type: actionTypes.SET_USER,
             user: payload,
           });
-
-          /*, userDocument).then(/*(querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-              const currentUser = doc.data();
-              this.setState({ currentUser });
-              this.getUserDataForVisual(currentUser);
-            });
-          });*/
         } else {
           dispatch({
             type: actionTypes.SET_USER,

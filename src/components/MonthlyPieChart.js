@@ -2,11 +2,10 @@ import React, { useState, useEffect } from "react";
 import { VictoryPie, VictoryLabel } from "victory";
 import { db } from "../firebase";
 
-const DayPieChart = (props) => {
-  const [userDocId, setUserDocId] = useState(props.userDocId);
-  const [dailyMessages, setDailyMessages] = useState([]);
-  const [dailyData, setVisualDailyData] = useState([]);
-  const [dailySalesData, setVisualDailySalesData] = useState([]);
+const MonthlyPieChart = (props) => {
+  const [monthlyMessages, setMonthlyMessages] = useState([]);
+  const [monthlyData, setVisualMonthlyData] = useState([]);
+  const [monthlySalesData, setVisualMonthlySalesData] = useState([]);
   const { userId } = props;
   const keys = [
     "potentialClients",
@@ -19,57 +18,62 @@ const DayPieChart = (props) => {
   useEffect(() => {
     if (!userId) return;
     (async () => {
-      let dailyMessages = [];
-      // now set on 1 hour
+      let monthlyMessages = [];
       const messagesSnapshot = await db
         .collection("users")
         .doc(userId)
         .collection("messages")
         .orderBy("timestamp", "desc")
-        .where("timestamp", ">", new Date(Date.now() - 24 * 60 * 60 * 1000))
+        .where(
+          "timestamp",
+          ">",
+          new Date(Date.now() - 24 * 30 * 60 * 60 * 1000)
+        )
         .get();
 
+      // dit klopt nog niet helemaal met de afgelopen maand.
       messagesSnapshot.forEach((snap) => {
         const data = snap.data();
-        dailyMessages.push(data);
+        monthlyMessages.push(data);
       });
 
-      let dailyData = createVisualDailyData(dailyMessages);
-      let dailySalesData = createVisualDailySalesData(dailyMessages);
+      console.log(monthlyMessages, "which monthlymessages");
+      let monthlyData = createVisualMonthlyData(monthlyMessages);
+      let monthlySalesData = createVisualMonthlySalesData(monthlyMessages);
 
-      setVisualDailyData(dailyData);
-      setVisualDailySalesData(dailySalesData);
+      setVisualMonthlyData(monthlyData);
+      setVisualMonthlySalesData(monthlySalesData);
     })();
   }, [userId]);
 
-  const createVisualDailyData = (dailyMessages) => {
-    let dailyDataArray = [];
+  const createVisualMonthlyData = (monthlyMessages) => {
+    let monthlyDataArray = [];
 
-    dailyMessages.map((message) => {
+    monthlyMessages.map((message) => {
       if (message.key !== "revenue") {
-        dailyDataArray.push({
+        monthlyDataArray.push({
           x: message.key,
           y: parseInt(message.answer),
         });
       }
     });
 
-    return makeData(dailyDataArray, "clients");
+    return makeData(monthlyDataArray, "clients");
   };
 
-  const createVisualDailySalesData = (dailyMessages) => {
-    let dailySalesDataArray = [];
+  const createVisualMonthlySalesData = (monthlyMessages) => {
+    let monthlySalesDataArray = [];
 
-    dailyMessages.map((message) => {
+    monthlyMessages.map((message) => {
       if (message.key == "revenue") {
-        dailySalesDataArray.push({
+        monthlySalesDataArray.push({
           x: message.key,
           y: parseInt(message.answer),
         });
       }
     });
 
-    return makeData(dailySalesDataArray, "money");
+    return makeData(monthlySalesDataArray, "money");
   };
 
   const makeData = (data, label) => {
@@ -95,16 +99,16 @@ const DayPieChart = (props) => {
   return (
     <div className="piechart-area" style={{ width: 350, height: 350 }}>
       <VictoryPie
-        data={dailyData}
-        width={180}
-        height={180}
+        data={monthlyData}
+        width={275}
+        height={275}
         colorScale={["tomato", "orange", "gold", "cyan", "navy", "lightgreen"]}
         style={{
-          labels: { fill: "black", fontSize: 6 },
+          labels: { fill: "black", fontSize: 11 },
         }}
       />
     </div>
   );
 };
 
-export default DayPieChart;
+export default MonthlyPieChart;
