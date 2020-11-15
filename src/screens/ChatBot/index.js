@@ -11,10 +11,9 @@ import { v4 as uuidv4 } from "uuid";
 import { VictoryPie } from "victory";
 import { SettingsInputSvideoRounded } from "@material-ui/icons";
 
-function ChatBot() {
+function ChatBot(props) {
   const [liveAnswer, setLiveAnswer] = useState("");
   const [currentStep, setCurrentStep] = useState(0);
-  // const [userDocId, setUserDocId] = useState("");
   const [messages, setMessages] = useState([]);
   const [{ user }, dispatch] = useStateValue();
   const chatBodyRef = useRef(null);
@@ -56,19 +55,6 @@ function ChatBot() {
     },
   };
 
-  /*useEffect(() => {
-    if (user) {
-      db.collection("users").onSnapshot((snapshot) => {
-        snapshot.docs.map((doc) => {
-          let data = doc.data();
-          if (data.userId === user.uid) {
-            let userDocId = doc.id;
-            setUserDocId(userDocId);
-          }
-        });
-      });
-    }
-  }, [user]);*/
   const userId = user?.uid;
   useEffect(() => {
     if (!userId) return;
@@ -117,8 +103,12 @@ function ChatBot() {
 
   const chatboxQuestion = QUESTIONS[currentStep]?.question;
 
+  let chatBotClass = "chat-close";
+  if (props.show) {
+    chatBotClass = "chat";
+  }
   return (
-    <div className="chat">
+    <div className={chatBotClass}>
       <div className="chat__mainblock">
         <div className="chat__header">
           <img src={chatbotIcon} alt="Chatbot" />

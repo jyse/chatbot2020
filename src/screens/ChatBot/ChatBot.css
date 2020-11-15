@@ -3,6 +3,7 @@
   place-items: center;
   background-color: white;
   height: 100vh;
+  z-index: 1;
 }
 .chat__mainblock {
   display: flex;

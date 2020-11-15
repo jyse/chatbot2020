@@ -20,6 +20,7 @@ class PageLayout extends React.Component {
   };
 
   userDashboardGridClickHandler = () => {
+    console.log(" hello this.userDashboardGridClickHandler");
     this.setState({ sideNavigationOpen: false });
   };
 
@@ -38,7 +39,7 @@ class PageLayout extends React.Component {
       <div>
         <ToolBar sideNavToggleClickHandler={this.sideNavToggleClickHandler} />
         <SideNavigation show={this.state.sideNavigationOpen} />
-        {this.props.children}
+        {userDashboardGrid}
       </div>
     );
   }
