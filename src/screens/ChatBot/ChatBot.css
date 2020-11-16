@@ -2,8 +2,7 @@
   display: grid;
   place-items: center;
   background-color: white;
-  height: 100vh;
-  z-index: 1;
+  /* height: 100vh;*/
 }
 .chat__mainblock {
   display: flex;
@@ -50,9 +49,9 @@
   color: gray;
 }
 
-@media (max-width: 768px) {
+@media screen and (max-width: 768px) {
   .chat__mainblock {
-    width: 80vw;
+    width: 90vw;
   }
 }
 

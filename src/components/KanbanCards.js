@@ -2,6 +2,7 @@ import { CardTravelSharp } from "@material-ui/icons";
 import React, { useState, useEffect } from "react";
 import "./KanbanCards.css";
 import { db } from "../firebase";
+import moment from "moment";
 
 function KanbanCards(props) {
   const [dailyMessages, setDailyMessages] = useState([]);
@@ -17,6 +18,10 @@ function KanbanCards(props) {
     "sales",
   ];
   useEffect(() => {
+    let now = new Date();
+    let startOfDay = now.setHours(0, 0, 0, 0);
+    let newStart = new Date(startOfDay);
+
     if (!userId) return;
     (async () => {
       let dailyMessages = [];
@@ -25,7 +30,7 @@ function KanbanCards(props) {
         .doc(userId)
         .collection("messages")
         .orderBy("timestamp", "desc")
-        .where("timestamp", ">", new Date(Date.now() - 12 * 60 * 60 * 1000))
+        .where("timestamp", ">", newStart)
         .get();
 
       messagesSnapshot.forEach((snap) => {

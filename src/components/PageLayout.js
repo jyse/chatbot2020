@@ -39,7 +39,7 @@ class PageLayout extends React.Component {
       <div>
         <ToolBar sideNavToggleClickHandler={this.sideNavToggleClickHandler} />
         <SideNavigation show={this.state.sideNavigationOpen} />
-        {userDashboardGrid}
+        {this.props.children}
       </div>
     );
   }

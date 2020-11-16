@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { VictoryPie, VictoryLabel } from "victory";
 import { db } from "../firebase";
+import moment from "moment";
 
 const DayPieChart = (props) => {
   const [userDocId, setUserDocId] = useState(props.userDocId);
@@ -21,12 +22,18 @@ const DayPieChart = (props) => {
     (async () => {
       let dailyMessages = [];
       // now set on 1 hour
+
+      let start = moment()
+        .subtract(moment().startOf("day").fromNow())
+        .startOf("day")
+        .toString();
+
       const messagesSnapshot = await db
         .collection("users")
         .doc(userId)
         .collection("messages")
         .orderBy("timestamp", "desc")
-        .where("timestamp", ">", new Date(Date.now() - 24 * 60 * 60 * 1000))
+        .where("timestamp", ">", start)
         .get();
 
       messagesSnapshot.forEach((snap) => {
