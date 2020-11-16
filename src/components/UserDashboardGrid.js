@@ -5,17 +5,14 @@ import YouTubeVideo from "./YouTubeVideo";
 import { db } from "../firebase";
 import { withRouter, Link } from "react-router-dom";
 import { useStateValue } from "./../StateProvider";
-import { v4 as uuidv4 } from "uuid";
 import KanbanCards from "./KanbanCards";
 import ChatBotButton from "./ChatBotButton";
 import ChatBot from "./../screens/ChatBot";
 import moment from "moment";
-import { CompareSharp } from "@material-ui/icons";
 
 function UserDashboardGrid(props) {
   const [dailyMessages, setDailyMessages] = useState([]);
-  const [messages, setMessages] = useState([]);
-  const [{ user }, dispatch] = useStateValue();
+  const [{ user }] = useStateValue();
   const [numbersFilled, setNumbersFilled] = useState(false);
   const { click } = props;
   const userId = user?.uid;
@@ -29,11 +26,6 @@ function UserDashboardGrid(props) {
     if (!userId) return;
     (async () => {
       let dailyMessages = [];
-
-      let start = moment()
-        .subtract(moment().startOf("day").fromNow())
-        .startOf("day")
-        .toString();
 
       // get messages since midnight (start of the day)
 
@@ -56,17 +48,7 @@ function UserDashboardGrid(props) {
         dailyMessages.push(data);
       });
 
-      // console.log(start, "what is in start?");
-      // console.log(new Date(Date.now() - 12 * 60 * 60 * 1000), "new Date style");
-
-      // console.log(moment().startOf("day").fromNow());
-      // console.log(dailyMessages, "what is in dailyMessages");
-      // console.log("hello userdashbaord");
-      if (dailyMessages.length > 0) {
-        setNumbersFilled(true);
-      } else {
-        setNumbersFilled(false);
-      }
+      setNumbersFilled(dailyMessages.length > 0);
 
       setDailyMessages(dailyMessages);
     })();
