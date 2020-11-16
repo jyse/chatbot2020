@@ -11,6 +11,7 @@ import ChatBot from "./../screens/ChatBot";
 import moment from "moment";
 
 function UserDashboardGrid(props) {
+  console.log(props, "what is in props");
   const [dailyMessages, setDailyMessages] = useState([]);
   const [{ user }] = useStateValue();
   const [numbersFilled, setNumbersFilled] = useState(false);
@@ -27,13 +28,9 @@ function UserDashboardGrid(props) {
     (async () => {
       let dailyMessages = [];
 
-      // get messages since midnight (start of the day)
-
       let now = new Date();
-      console.log(now, "what is in now?");
       let startOfDay = now.setHours(0, 0, 0, 0);
       let newStart = new Date(startOfDay);
-      console.log(newStart, "what is in newStart");
 
       const messagesSnapshot = await db
         .collection("users")
@@ -54,8 +51,6 @@ function UserDashboardGrid(props) {
     })();
   }, [userId]);
 
-  console.log(dailyMessages.length, "what is in dailyMessages LEngth");
-  console.log(numbersFilled, "numbersFilled");
   return (
     <div>
       <div className="main-board" onClick={click}>
@@ -117,7 +112,9 @@ function UserDashboardGrid(props) {
       </div>
       {chatBotOpen ? (
         <div className="chatbot-popup">
-          <ChatBot />
+          <div className="chatbot-popup-content">
+            <ChatBot />
+          </div>
         </div>
       ) : null}
     </div>

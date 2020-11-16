@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { VictoryPie, VictoryLabel } from "victory";
+import { VictoryPie } from "victory";
 import { db } from "../firebase";
-import moment from "moment";
 
 const DayPieChart = (props) => {
   const [userDocId, setUserDocId] = useState(props.userDocId);
@@ -9,31 +8,23 @@ const DayPieChart = (props) => {
   const [dailyData, setVisualDailyData] = useState([]);
   const [dailySalesData, setVisualDailySalesData] = useState([]);
   const { userId } = props;
-  const keys = [
-    "potentialClients",
-    "calls",
-    "appointments",
-    "pitches",
-    "sales",
-  ];
 
   useEffect(() => {
+    let now = new Date();
+    let startOfDay = now.setHours(0, 0, 0, 0);
+    let newStart = new Date(startOfDay);
+
     if (!userId) return;
     (async () => {
       let dailyMessages = [];
       // now set on 1 hour
-
-      let start = moment()
-        .subtract(moment().startOf("day").fromNow())
-        .startOf("day")
-        .toString();
 
       const messagesSnapshot = await db
         .collection("users")
         .doc(userId)
         .collection("messages")
         .orderBy("timestamp", "desc")
-        .where("timestamp", ">", start)
+        .where("timestamp", ">", newStart)
         .get();
 
       messagesSnapshot.forEach((snap) => {
@@ -79,8 +70,7 @@ const DayPieChart = (props) => {
     return makeData(dailySalesDataArray, "money");
   };
 
-  const makeData = (data, label) => {
-    let totalCount = 0;
+  const makeData = (data) => {
     let madeData = data.reduce((acc, { x, y }) => {
       if (!Reflect.has(acc, x)) acc[x] = 0;
 

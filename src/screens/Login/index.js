@@ -32,8 +32,6 @@ function Login() {
       .catch((error) => alert(error.message));
   };
 
-  console.log({ user });
-
   return user ? (
     <Redirect to={`/board/${user.uid}`} />
   ) : (

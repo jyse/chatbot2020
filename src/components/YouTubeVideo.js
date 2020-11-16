@@ -9,12 +9,13 @@ const YouTubeVideo = (props) => {
   return (
     <div className="container">
       <iframe
+        id="videoYoutube"
         className="player"
         type="text/html"
         width="100%"
         height="100%"
         src={videoSrc}
-        frameborder="0"
+        frameBorder="0"
       />
     </div>
   );

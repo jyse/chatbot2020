@@ -1,19 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { VictoryPie, VictoryLabel } from "victory";
+import { VictoryPie } from "victory";
 import { db } from "../firebase";
 
 const MonthlyPieChart = (props) => {
-  const [monthlyMessages, setMonthlyMessages] = useState([]);
   const [monthlyData, setVisualMonthlyData] = useState([]);
   const [monthlySalesData, setVisualMonthlySalesData] = useState([]);
   const { userId } = props;
-  const keys = [
-    "potentialClients",
-    "calls",
-    "appointments",
-    "pitches",
-    "sales",
-  ];
 
   useEffect(() => {
     if (!userId) return;
@@ -31,13 +23,11 @@ const MonthlyPieChart = (props) => {
         )
         .get();
 
-      // dit klopt nog niet helemaal met de afgelopen maand.
       messagesSnapshot.forEach((snap) => {
         const data = snap.data();
         monthlyMessages.push(data);
       });
 
-      console.log(monthlyMessages, "which monthlymessages");
       let monthlyData = createVisualMonthlyData(monthlyMessages);
       let monthlySalesData = createVisualMonthlySalesData(monthlyMessages);
 

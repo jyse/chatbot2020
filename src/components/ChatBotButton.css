@@ -3,6 +3,7 @@
   bottom: 0px;
   right: 0px;
   padding: 25px;
+  z-index: 20;
 }
 
 .button {

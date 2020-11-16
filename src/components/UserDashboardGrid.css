@@ -3,6 +3,7 @@
   display: grid;
   background-color: white;
   padding-bottom: 75px;
+  z-index: 50;
 }
 
 .main-header {
@@ -163,13 +164,23 @@
 
 .chatbot-popup {
   position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
+.chatbot-popup-content {
+  position: fixed;
   bottom: 100px;
   left: 5vw;
   right: 5vw;
+  z-index: 10;
 }
 
 @media screen and (min-width: 768px) {
-  .chatbot-popup {
+  .chatbot-popup-content {
     left: initial;
     right: 50px;
   }

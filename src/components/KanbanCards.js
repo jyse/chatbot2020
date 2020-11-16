@@ -41,10 +41,7 @@ function KanbanCards(props) {
       let dailyData = createVisualDailyData(dailyMessages);
       let dailySalesData = createVisualDailySalesData(dailyMessages);
 
-      console.log(dailyData, "what is in messages now?");
-      if (dailyData.length !== 0) {
-        setNumbersFilled(true);
-      }
+      setNumbersFilled(dailyData.length > 0);
       setVisualDailyData(dailyData);
       setVisualDailySalesData(dailySalesData);
     })();
@@ -128,9 +125,10 @@ function KanbanCards(props) {
   return (
     <div className="main-overview">
       {dailyData.length == 0
-        ? dailyDataStandard.map((card) => (
+        ? dailyDataStandard.map((card, key) => (
             <div
               className="overviewcard"
+              key={key}
               style={{ backgroundColor: card.color }}
             >
               <div className="overviewcard__icon">
@@ -141,9 +139,10 @@ function KanbanCards(props) {
               </div>
             </div>
           ))
-        : dailyData.map((card, index) => (
+        : dailyData.map((card, key) => (
             <div
               className="overviewcard"
+              key={key}
               style={{
                 backgroundColor: BACKGROUND_COLORS[card.x].color,
               }}
@@ -156,30 +155,6 @@ function KanbanCards(props) {
               </div>
             </div>
           ))}
-      {/* <div className="overviewcard" style={{ backgroundColor: "#CDE7BE" }}>
-        <div className="overviewcard__icon">
-          <h1>Appointments</h1>
-        </div>
-        <div className="overviewcard__info">
-          <h1>5</h1>
-        </div>
-      </div>
-      <div className="overviewcard" style={{ backgroundColor: "#AA7DCE" }}>
-        <div className="overviewcard__icon">
-          <h1>Pitches</h1>
-        </div>
-        <div className="overviewcard__info">
-          <h1>2</h1>
-        </div>
-      </div>
-      <div className="overviewcard" style={{ backgroundColor: "#7E7F9A" }}>
-        <div className="overviewcard__icon">
-          <h1>Sales made</h1>
-        </div>
-        <div className="overviewcard__info">
-          <h1>1</h1>
-        </div>
-      </div> */}
     </div>
   );
 }

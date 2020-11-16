@@ -5,7 +5,7 @@ import SideNavigation from "./SideNavigation";
 import ToolBar from "./ToolBar";
 import UserDashboardGrid from "./UserDashboardGrid";
 
-class PageLayout extends React.Component {
+class PageLayout extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -20,7 +20,6 @@ class PageLayout extends React.Component {
   };
 
   userDashboardGridClickHandler = () => {
-    console.log(" hello this.userDashboardGridClickHandler");
     this.setState({ sideNavigationOpen: false });
   };
 
@@ -29,16 +28,21 @@ class PageLayout extends React.Component {
 
     if (this.state.sideNavigationOpen) {
       userDashboardGrid = (
-        <UserDashboardGrid click={this.userDashboardGridClickHandler} />
+        <UserDashboardGrid
+          click={this.userDashboardGridClickHandler}
+          greeting="hello"
+        />
       );
     } else {
-      userDashboardGrid = <UserDashboardGrid />;
+      console.log("sideNav is closed");
+      userDashboardGrid = <UserDashboardGrid test="test" />;
     }
 
     return (
       <div>
         <ToolBar sideNavToggleClickHandler={this.sideNavToggleClickHandler} />
         <SideNavigation show={this.state.sideNavigationOpen} />
+        {/* {userDashboardGrid} */}
         {this.props.children}
       </div>
     );
