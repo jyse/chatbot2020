@@ -12,7 +12,7 @@ function ChatBot() {
   const [liveAnswer, setLiveAnswer] = useState("");
   const [currentStep, setCurrentStep] = useState(0);
   const [messages, setMessages] = useState([]);
-  const [{ user }, dispatch] = useStateValue();
+  const [{ user }] = useStateValue();
   const chatBodyRef = useRef(null);
 
   const QUESTIONS = {

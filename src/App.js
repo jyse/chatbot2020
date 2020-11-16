@@ -15,7 +15,7 @@ import { auth, db } from "./firebase";
 import { actionTypes } from "./reducer";
 
 const authHoc = (Component) => (props) => {
-  const [{ user }, dispatch] = useStateValue();
+  const [{ user }] = useStateValue();
 
   return user ? <Component {...props} /> : <Redirect to="/login" />;
 };
