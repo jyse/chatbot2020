@@ -3,7 +3,6 @@ import "./App.css";
 import ChatBot from "./screens/ChatBot";
 import PageLayout from "./components/PageLayout";
 import Login from "./screens/Login";
-import SignUp from "./screens/SignUp";
 import {
   BrowserRouter as Router,
   Route,

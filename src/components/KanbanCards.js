@@ -30,7 +30,7 @@ function KanbanCards(props) {
 
       setVisualDailyData(dailyData);
     })();
-  }, [userId, createVisualDailyData]);
+  }, [userId]);
 
   const createVisualDailyData = (dailyMessages) => {
     let dailyDataArray = [];

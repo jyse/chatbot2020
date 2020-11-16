@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
 import { useStateValue } from "../../StateProvider";
 import { db } from "../../firebase";
 import { withRouter } from "react-router-dom";
@@ -8,10 +7,8 @@ import chatbotIcon from "../../components/chatbotIcon.png";
 import DayPieChart from "../../components/DayPieChart";
 import firebase from "firebase";
 import { v4 as uuidv4 } from "uuid";
-import { VictoryPie } from "victory";
-import { SettingsInputSvideoRounded } from "@material-ui/icons";
 
-function ChatBot(props) {
+function ChatBot() {
   const [liveAnswer, setLiveAnswer] = useState("");
   const [currentStep, setCurrentStep] = useState(0);
   const [messages, setMessages] = useState([]);

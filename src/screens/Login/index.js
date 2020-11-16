@@ -1,6 +1,6 @@
 import React from "react";
 import "./Login.css";
-import { db, auth, provider, firebaseApp } from "../../firebase";
+import { db, auth, provider } from "../../firebase";
 import gurlogo from "./gurlogo.png";
 import { useStateValue } from "../../StateProvider";
 import { actionTypes } from "../../reducer";
