@@ -19,7 +19,7 @@ function UserDashboardGrid(props) {
   const [numbersFilled, setNumbersFilled] = useState(false);
   const { click } = props;
   const userId = user?.uid;
-  const [chatBotOpen, setShowChat] = useState(true);
+  const [chatBotOpen, setShowChat] = useState(false);
 
   const chatBotPopUp = () => {
     setShowChat((openState) => !openState);
