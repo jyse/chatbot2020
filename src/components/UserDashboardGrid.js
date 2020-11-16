@@ -9,6 +9,8 @@ import { v4 as uuidv4 } from "uuid";
 import KanbanCards from "./KanbanCards";
 import ChatBotButton from "./ChatBotButton";
 import ChatBot from "./../screens/ChatBot";
+import moment from "moment";
+import { CompareSharp } from "@material-ui/icons";
 
 function UserDashboardGrid(props) {
   const [dailyMessages, setDailyMessages] = useState([]);
@@ -20,20 +22,33 @@ function UserDashboardGrid(props) {
   const [chatBotOpen, setShowChat] = useState(false);
 
   const chatBotPopUp = () => {
-    setShowChat(true);
+    setShowChat((openState) => !openState);
   };
 
   useEffect(() => {
     if (!userId) return;
     (async () => {
       let dailyMessages = [];
-      // now set on 24 hour
+
+      let start = moment()
+        .subtract(moment().startOf("day").fromNow())
+        .startOf("day")
+        .toString();
+
+      // get messages since midnight (start of the day)
+
+      let now = new Date();
+      console.log(now, "what is in now?");
+      let startOfDay = now.setHours(0, 0, 0, 0);
+      let newStart = new Date(startOfDay);
+      console.log(newStart, "what is in newStart");
+
       const messagesSnapshot = await db
         .collection("users")
         .doc(userId)
         .collection("messages")
         .orderBy("timestamp", "desc")
-        .where("timestamp", ">", new Date(Date.now() - 24 * 60 * 60 * 1000))
+        .where("timestamp", ">", newStart)
         .get();
 
       messagesSnapshot.forEach((snap) => {
@@ -41,13 +56,24 @@ function UserDashboardGrid(props) {
         dailyMessages.push(data);
       });
 
+      // console.log(start, "what is in start?");
+      // console.log(new Date(Date.now() - 12 * 60 * 60 * 1000), "new Date style");
+
+      // console.log(moment().startOf("day").fromNow());
+      // console.log(dailyMessages, "what is in dailyMessages");
+      // console.log("hello userdashbaord");
       if (dailyMessages.length > 0) {
         setNumbersFilled(true);
+      } else {
+        setNumbersFilled(false);
       }
+
       setDailyMessages(dailyMessages);
     })();
   }, [userId]);
 
+  console.log(dailyMessages.length, "what is in dailyMessages LEngth");
+  console.log(numbersFilled, "numbersFilled");
   return (
     <div>
       <div className="main-board" onClick={click}>
@@ -104,10 +130,14 @@ function UserDashboardGrid(props) {
           </div>
         </div>
       </div>
-      <div className="btn" onClick={chatBotPopUp}>
-        <ChatBotButton click={chatBotOpen} />
-        <ChatBot show={chatBotOpen} />
+      <div className="btn">
+        <ChatBotButton onClick={chatBotPopUp} />
       </div>
+      {chatBotOpen ? (
+        <div className="chatbot-popup">
+          <ChatBot />
+        </div>
+      ) : null}
     </div>
   );
 }

@@ -103,12 +103,8 @@ function ChatBot(props) {
 
   const chatboxQuestion = QUESTIONS[currentStep]?.question;
 
-  let chatBotClass = "chat-close";
-  if (props.show) {
-    chatBotClass = "chat";
-  }
   return (
-    <div className={chatBotClass}>
+    <div className="chat">
       <div className="chat__mainblock">
         <div className="chat__header">
           <img src={chatbotIcon} alt="Chatbot" />
