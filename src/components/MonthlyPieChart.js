@@ -67,7 +67,6 @@ const MonthlyPieChart = (props) => {
   };
 
   const makeData = (data, label) => {
-    let totalCount = 0;
     let madeData = data.reduce((acc, { x, y }) => {
       if (!Reflect.has(acc, x)) acc[x] = 0;
 

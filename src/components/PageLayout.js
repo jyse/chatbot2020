@@ -24,19 +24,19 @@ class PageLayout extends Component {
   };
 
   render() {
-    let userDashboardGrid;
+    // let userDashboardGrid;
 
-    if (this.state.sideNavigationOpen) {
-      userDashboardGrid = (
-        <UserDashboardGrid
-          click={this.userDashboardGridClickHandler}
-          greeting="hello"
-        />
-      );
-    } else {
-      console.log("sideNav is closed");
-      userDashboardGrid = <UserDashboardGrid test="test" />;
-    }
+    // if (this.state.sideNavigationOpen) {
+    //   userDashboardGrid = (
+    //     <UserDashboardGrid
+    //       click={this.userDashboardGridClickHandler}
+    //       greeting="hello"
+    //     />
+    //   );
+    // } else {
+    //   console.log("sideNav is closed");
+    //   userDashboardGrid = <UserDashboardGrid test="test" />;
+    // }
 
     return (
       <div>

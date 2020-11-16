@@ -9,6 +9,7 @@ const YouTubeVideo = (props) => {
   return (
     <div className="container">
       <iframe
+        title="VideoUserDashboard"
         id="videoYoutube"
         className="player"
         type="text/html"

@@ -8,13 +8,11 @@ import { useStateValue } from "./../StateProvider";
 import KanbanCards from "./KanbanCards";
 import ChatBotButton from "./ChatBotButton";
 import ChatBot from "./../screens/ChatBot";
-import moment from "moment";
 
 function UserDashboardGrid(props) {
   console.log(props, "what is in props");
   const [dailyMessages, setDailyMessages] = useState([]);
   const [{ user }] = useStateValue();
-  const [numbersFilled, setNumbersFilled] = useState(false);
   const { click } = props;
   const userId = user?.uid;
   const [chatBotOpen, setShowChat] = useState(false);
@@ -45,8 +43,6 @@ function UserDashboardGrid(props) {
         dailyMessages.push(data);
       });
 
-      setNumbersFilled(dailyMessages.length > 0);
-
       setDailyMessages(dailyMessages);
     })();
   }, [userId]);
@@ -69,7 +65,7 @@ function UserDashboardGrid(props) {
             </h1>
           </div>
         </div>
-        {numbersFilled && (
+        {dailyMessages.length > 0 && (
           <div className="main-header">
             <div className="main-headerLeft">
               <h2> Past month's results </h2>

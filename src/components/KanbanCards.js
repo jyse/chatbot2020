@@ -1,22 +1,10 @@
-import { CardTravelSharp } from "@material-ui/icons";
 import React, { useState, useEffect } from "react";
 import "./KanbanCards.css";
 import { db } from "../firebase";
-import moment from "moment";
 
 function KanbanCards(props) {
-  const [dailyMessages, setDailyMessages] = useState([]);
   const [dailyData, setVisualDailyData] = useState([]);
-  const [dailySalesData, setVisualDailySalesData] = useState([]);
-  const [numbersFilled, setNumbersFilled] = useState(false);
   const { userId } = props;
-  const keys = [
-    "potentialClients",
-    "calls",
-    "appointments",
-    "pitches",
-    "sales",
-  ];
   useEffect(() => {
     let now = new Date();
     let startOfDay = now.setHours(0, 0, 0, 0);
@@ -39,13 +27,10 @@ function KanbanCards(props) {
       });
 
       let dailyData = createVisualDailyData(dailyMessages);
-      let dailySalesData = createVisualDailySalesData(dailyMessages);
 
-      setNumbersFilled(dailyData.length > 0);
       setVisualDailyData(dailyData);
-      setVisualDailySalesData(dailySalesData);
     })();
-  }, [userId]);
+  }, [userId, createVisualDailyData]);
 
   const createVisualDailyData = (dailyMessages) => {
     let dailyDataArray = [];
@@ -78,7 +63,6 @@ function KanbanCards(props) {
   };
 
   const makeData = (data, label) => {
-    let totalCount = 0;
     let madeData = data.reduce((acc, { x, y }) => {
       if (!Reflect.has(acc, x)) acc[x] = 0;
 
