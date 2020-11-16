@@ -156,8 +156,10 @@ function ChatBot() {
               <p>You're done! This is your summary for today!</p>
               <DayPieChart userId={userId} />
               <p> Keep up the good work! </p>
-              <p> STILL SHOW THE DAILY SALES IN EUROS / DOLLARS</p>
-              <span className="chat__timestamp">Time now</span>
+              {/* <p> STILL SHOW THE DAILY SALES IN EUROS / DOLLARS</p> */}
+              <span className="chat__timestamp">
+                {new Date().toUTCString()}
+              </span>
             </div>
           )}
         </div>
@@ -175,7 +177,9 @@ function ChatBot() {
               </button>
             </form>
           ) : (
-            <p> Thank you! </p>
+            <div className="bye">
+              <p> Thank you! </p>
+            </div>
           )}
         </div>
       </div>
